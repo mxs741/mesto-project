@@ -1,0 +1,14 @@
+.btn {
+  background-color: #000;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: 1px #fff solid;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity .1s linear;
+}
+
+.btn:hover {
+  opacity: .6;
+}

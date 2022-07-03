@@ -1,0 +1,10 @@
+.header__hr {
+  border: 1px solid rgba(84, 84, 84, .7);
+  margin: 41px 0 0;
+}
+
+@media screen and (max-width: 720px) {
+  .header__hr {
+    margin-top: 32px;
+  }
+}

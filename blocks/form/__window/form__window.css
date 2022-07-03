@@ -1,0 +1,23 @@
+.form__window {
+  background-color: #fff;
+  border-radius: 10px;
+  bottom: 0;
+  box-sizing: border-box;
+  height: 330px;
+  left: 0;
+  margin: auto;
+  padding: 34px 36px 37px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 430px;
+  z-index: 2;
+}
+
+@media screen and (max-width: 720px) {
+  .form__window {
+    width: 282px;
+    height: 322px;
+    padding: 22px 25px;
+  }
+}

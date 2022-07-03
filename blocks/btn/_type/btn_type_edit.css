@@ -1,0 +1,6 @@
+.btn_type_edit {
+  background-image: url(../../../images/edit-btn.svg);
+  height: 24px;
+  margin-bottom: 9px;
+  width: 24px;
+}

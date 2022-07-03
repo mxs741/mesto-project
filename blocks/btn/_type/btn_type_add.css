@@ -1,0 +1,17 @@
+.btn_type_add {
+  background-image: url(../../../images/add-btn.svg);
+  height: 50px;
+  width: 150px;
+}
+
+@media screen and (max-width: 720px) {
+  .btn_type_add {
+    width: 282px;
+  }
+}
+
+@media screen and (max-width: 537px) {
+  .btn_type_add {
+    margin-top: 10px;
+  }
+}
