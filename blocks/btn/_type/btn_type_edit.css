@@ -4,3 +4,13 @@
   margin-bottom: 9px;
   width: 24px;
 }
+
+@media screen and (max-width: 537px) {
+  .btn_type_edit {
+    margin-top: 10px;
+    background-size: 16px 16px;
+    width: 18px;
+    height: 18px;
+    background-size: 7.5px 7.5px;
+  }
+}

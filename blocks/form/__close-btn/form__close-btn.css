@@ -16,7 +16,7 @@
 }
 
 .form__close-btn:hover {
-  opacity: .2;
+  opacity: .6;
 }
 
 @media screen and (max-width: 720px) {

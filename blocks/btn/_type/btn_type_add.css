@@ -1,5 +1,6 @@
 .btn_type_add {
   background-image: url(../../../images/add-btn.svg);
+  border-width: 2px;
   height: 50px;
   width: 150px;
 }
@@ -13,5 +14,6 @@
 @media screen and (max-width: 537px) {
   .btn_type_add {
     margin-top: 10px;
+    background-size: 16px 16px;
   }
 }
