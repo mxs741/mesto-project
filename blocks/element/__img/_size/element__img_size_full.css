@@ -1,0 +1,7 @@
+.element__img_size_full {
+  border-radius: 0;
+  height: auto;
+  max-height: 75vh;
+  max-width: 75vw;
+  width: auto;
+}

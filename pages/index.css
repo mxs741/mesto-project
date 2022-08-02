@@ -27,10 +27,17 @@
 @import url(../blocks/elements/elements.css);
 @import url(../blocks/element/element.css);
 @import url(../blocks/element/__img/element__img.css);
+@import url(../blocks/element/__popup/element__popup.css);
+@import url(../blocks/element/__popup/_active/element__popup_active.css);
+@import url(../blocks/element/__img-window/element__img-window.css);
+@import url(../blocks/element/__img/_size/element__img_size_full.css);
+@import url(../blocks/element/__img-caption/element__img-caption.css);
+@import url(../blocks/element/__popup-close-btn/element__popup-close-btn.css);
 @import url(../blocks/element/__row/element__row.css);
 @import url(../blocks/element/__title/element__title.css);
 @import url(../blocks/btn/_type/btn_type_like.css);
 @import url(../blocks/btn/_type/btn_type_like-active.css);
+@import url(../blocks/btn/_type/btn_type_remove-card.css);
 
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);

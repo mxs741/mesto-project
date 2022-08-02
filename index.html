@@ -27,53 +27,23 @@
       </section>
 
       <section class="elements">
-        <div class="element">
-          <img class="element__img" src="./images/karachaevsk.png" alt="Карачаевск.">
-          <div class="element__row">
-            <h2 class="element__title">Карачаевск</h2>
-            <button class="btn btn_type_like btn_type_like-active" type="button"></button>
+        <template id="element-template">
+          <div class="element">
+            <img class="element__img" src="" alt="">
+            <div class="element__row">
+              <h2 class="element__title"></h2>
+              <button class="btn btn_type_like" type="button"></button>
+            </div>
+            <button class="btn btn_type_remove-card"></button>
           </div>
-        </div>
-
-        <div class="element">
-          <img class="element__img" src="./images/elbrus.png" alt="Гора Эльбрус.">
-          <div class="element__row">
-            <h2 class="element__title">Гора Эльбрус</h2>
-            <button class="btn btn_type_like" type="button"></button>
+          <div class="element__popup">
+            <figure class="element__img-window">
+              <img class="element__img element__img_size_full" src="" alt="">
+              <figcaption class="element__img-caption"></figcaption>
+              <button class="element__popup-close-btn" type="button"></button>
+            </а>
           </div>
-        </div>
-
-        <div class="element">
-          <img class="element__img" src="./images/dombay.png" alt="Домбай.">
-          <div class="element__row">
-            <h2 class="element__title">Домбай</h2>
-            <button class="btn btn_type_like" type="button"></button>
-          </div>
-        </div>
-
-        <div class="element">
-          <img class="element__img" src="./images/elbrus.png" alt="Гора Эльбрус.">
-          <div class="element__row">
-            <h2 class="element__title">Гора Эльбрус</h2>
-            <button class="btn btn_type_like" type="button"></button>
-          </div>
-        </div>
-
-        <div class="element">
-          <img class="element__img" src="./images/dombay.png" alt="Домбай.">
-          <div class="element__row">
-            <h2 class="element__title">Домбай</h2>
-            <button class="btn btn_type_like" type="button"></button>
-          </div>
-        </div>
-
-        <div class="element">
-          <img class="element__img" src="./images/karachaevsk.png" alt="Карачаево-Черкесия.">
-          <div class="element__row">
-            <h2 class="element__title">Карачаево-Ч...</h2>
-            <button class="btn btn_type_like" type="button"></button>
-          </div>
-        </div>
+        </template>
       </section>
     </main>
     <footer class="footer">
@@ -81,18 +51,32 @@
     </footer>
 
   </div>
-  <div class="form form_active">
+  <div class="form form_edit">
     <div class="form__window">
       <h2 class="form__title">Редактировать профиль</h2>
-      <form action="/" method="POST" name="form-edit-profile">
+      <form class="form__edit" action="/" method="POST" name="form-edit-profile">
         <fieldset class="form__fieldset">
-          <input class="form__input" type="text" value="Жак-Ив Кусто">
-          <input class="form__input" type="text" value="Исследователь океана">
+          <input class="form__input form__input_name" type="text" value="Жак-Ив Кусто">
+          <input class="form__input form__input_description" type="text" value="Исследователь океана">
         </fieldset>
       </form>
-      <button class="form__btn" type="submit">Сохранить</button>
+      <button class="form__btn form__btn_type_save" type="submit">Сохранить</button>
       <button class="form__close-btn" type="button"></button>
     </div>
   </div>
+  <div class="form form_add">
+    <div class="form__window">
+      <h2 class="form__title">Новое место</h2>
+      <form class="form__add" action="/" method="POST" name="form-add-card">
+        <fieldset class="form__fieldset">
+          <input class="form__input form__input_type_name" type="text" placeholder="Название">
+          <input class="form__input form__input_type_link" type="text" placeholder="Ссылка на картинку">
+        </fieldset>
+      </form>
+      <button class="form__btn form__btn_type_create" type="submit">Создать</button>
+      <button class="form__close-btn form-add__close-btn" type="button"></button>
+    </div>
+  </div>
+  <script src="./scripts/index.js"></script>
 </body>
 </html>

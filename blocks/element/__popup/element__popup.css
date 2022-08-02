@@ -1,8 +1,5 @@
-.form {
+.element__popup {
   background-color: rgba(0, 0, 0, .5);
-  font-family: 'Inter', 'Arial', sans-serif;
-  font-size: 18px;
-  font-weight: 400;
   height: 100vh;
   left: 0;
   opacity: 0;

@@ -1,0 +1,15 @@
+.btn_type_remove-card {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 18px;
+  height: 19px;
+  background-image: url(../../../images/remove.svg);
+  border: 0;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.btn_type_remove-card:hover {
+  opacity: .5;
+}
