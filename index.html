@@ -36,14 +36,15 @@
             </div>
             <button class="btn btn_type_remove-card"></button>
           </div>
-          <div class="element__popup">
-            <figure class="element__img-window">
-              <img class="element__img element__img_size_full" src="" alt="">
-              <figcaption class="element__img-caption"></figcaption>
-              <button class="element__popup-close-btn" type="button"></button>
-            </а>
-          </div>
         </template>
+        <div class="popup popup_element">
+          <figure class="element__img-window">
+            <img class="element__img element__img_size_full" src="" alt="">
+            <figcaption class="element__img-caption"></figcaption>
+            <button class="btn_type_close btn_type_close-img" type="button"></button>
+          </а>
+        </div>
+
       </section>
     </main>
     <footer class="footer">
@@ -51,7 +52,7 @@
     </footer>
 
   </div>
-  <div class="form form_edit">
+  <div class="form popup popup_edit">
     <div class="form__window">
       <h2 class="form__title">Редактировать профиль</h2>
       <form class="form__edit" action="/" method="POST" name="form-edit-profile">
@@ -61,10 +62,11 @@
         </fieldset>
       </form>
       <button class="form__btn form__btn_type_save" type="submit">Сохранить</button>
-      <button class="form__close-btn" type="button"></button>
+      <button class="btn_type_close btn_type_close-edit" type="button"></button>
     </div>
   </div>
-  <div class="form form_add">
+
+  <div class="form popup popup_add">
     <div class="form__window">
       <h2 class="form__title">Новое место</h2>
       <form class="form__add" action="/" method="POST" name="form-add-card">
@@ -74,7 +76,7 @@
         </fieldset>
       </form>
       <button class="form__btn form__btn_type_create" type="submit">Создать</button>
-      <button class="form__close-btn form-add__close-btn" type="button"></button>
+      <button class="btn_type_close btn_type_close-add" type="button"></button>
     </div>
   </div>
   <script src="./scripts/index.js"></script>

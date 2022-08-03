@@ -1,5 +1,0 @@
-.element__popup_active {
-  opacity: 1;
-  transition: visibility 0s, opacity .2s linear;
-  visibility: visible;
-}

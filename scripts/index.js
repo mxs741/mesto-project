@@ -1,19 +1,26 @@
 // Открытие/закрытие формы редактирования
 const editBtn = document.querySelector('.btn_type_edit');
-const closeBtn = document.querySelector('.form__close-btn');
-const editForm = document.querySelector('.form_edit');
-const formElement = document.querySelector('.form__edit');
+const closeBtn = document.querySelector('.btn_type_close-edit');
+const editForm = document.querySelector('.popup_edit');
 const inputName = document.querySelector('.form__input_name');
 const profileName = document.querySelector('.profile__name');
 const inputDescription = document.querySelector('.form__input_description');
 const profileDescription = document.querySelector('.profile__description');
 
-editBtn.addEventListener('click', function() {
-  editForm.classList.add('form_active');
-});
+function openPopup(popup) {
+  popup.classList.add('popup_opened')
+}
+
+function closePopup(popup) {
+  popup.classList.remove('popup_opened')
+}
+
+
+
+editBtn.addEventListener('click', () => openPopup(editForm));
 
 closeBtn.addEventListener('click', function() {
-  editForm.classList.remove('form_active');
+  closePopup(editForm);
   inputName.value = profileName.textContent;
   inputDescription.value = profileDescription.textContent;
 });
@@ -21,22 +28,18 @@ closeBtn.addEventListener('click', function() {
 document.querySelector('.form__btn').addEventListener('click', function() {
   profileName.textContent = inputName.value;
   profileDescription.textContent = inputDescription.value;
-  editForm.classList.remove('form_active');
+  closePopup(editForm);
 });
 
 
 // Открытие/закрытие формы добавления карточки
 const addBtn = document.querySelector('.btn_type_add');
-const addForm = document.querySelector('.form_add');
-const closeAddFormBtn = document.querySelector('.form-add__close-btn');
+const addForm = document.querySelector('.popup_add');
+const closeAddFormBtn = document.querySelector('.btn_type_close-add');
 
-addBtn.addEventListener('click', function() {
-  addForm.classList.add('form_active');
-});
+addBtn.addEventListener('click', () => openPopup(addForm));
 
-closeAddFormBtn.addEventListener('click', function() {
-  addForm.classList.remove('form_active');
-});
+closeAddFormBtn.addEventListener('click', () => closePopup(addForm));
 
 // Добавление карточки
 const elements = document.querySelector('.elements');
@@ -45,7 +48,7 @@ const cardTemplate = document.querySelector('#element-template').content;
 
 function addCard(titleValue, linkValue) {
   const card = cardTemplate.querySelector('.element').cloneNode(true);
-  const popup = cardTemplate.querySelector('.element__popup').cloneNode(true);
+  const popup = document.querySelector('.popup_element').cloneNode(true);
 
   card.querySelector('.element__title').textContent = titleValue;
   card.querySelector('.element__img').src = linkValue;
@@ -58,14 +61,11 @@ function addCard(titleValue, linkValue) {
   });
 
   // Открытие попапа
-  card.querySelector('.element__img').addEventListener('click', function() {
-    popup.classList.add('element__popup_active');
-  });
+  card.querySelector('.element__img').addEventListener('click', () => openPopup(popup));
 
   //Закрытие попапа
-  popup.querySelector('.element__popup-close-btn').addEventListener('click', function() {
-    popup.classList.remove('element__popup_active');
-  });
+  popup.querySelector('.btn_type_close-img').addEventListener('click', () => closePopup(popup));
+
   elements.append(card);
   elements.append(popup);
 
@@ -84,7 +84,7 @@ createBtn.addEventListener('click', function() {
 
   title.value = '';
   link.value = '';
-  addForm.classList.remove('form_active');
+  closePopup(addForm);
 });
 
 
@@ -117,7 +117,7 @@ const initialCards = [
 
 initialCards.forEach(function(item) {
   const card = cardTemplate.querySelector('.element').cloneNode(true);
-  const popup = cardTemplate.querySelector('.element__popup').cloneNode(true);
+  const popup = document.querySelector('.popup_element').cloneNode(true);
   card.querySelector('.element__title').textContent = item.name;
   card.querySelector('.element__img').src = item.link;
   popup.querySelector('.element__img-caption').textContent = item.name;
