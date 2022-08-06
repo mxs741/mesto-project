@@ -15,6 +15,17 @@ const createBtn = document.querySelector('.form__btn_type_create');
 const cardTemplate = document.querySelector('#element-template').content;
 const formEdit = document.querySelector('.form__edit');
 const formAdd = document.querySelector('.form__add');
+const popup = document.querySelector('.popup_element');
+const elemImgPopup = popup.querySelector('.element__img_size_full');
+const elemImgPopupCaption = popup.querySelector('.element__img-caption');
+
+const card = cardTemplate.querySelector('.element')
+  const elemTitle = card.querySelector('.element__title');
+  const elemImg = card.querySelector('.element__img');
+  const likeBtn = card.querySelector('.btn_type_like');
+  const deleteBtn = card.querySelector('.btn_type_remove-card');
+  const cardElem = deleteBtn.closest('.element');
+
 
 const initialCards = [
   {
@@ -64,14 +75,14 @@ editBtn.addEventListener('click', function() {
   inputDescription.value = profileDescription.textContent;
 });
 
-function formSubmitHandlerTypeEdit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault()
   profileName.textContent = inputName.value;
   profileDescription.textContent = inputDescription.value;
   closePopup(editFormPopup);
 }
 
-formEdit.addEventListener('submit', formSubmitHandlerTypeEdit);
+formEdit.addEventListener('submit', handleProfileFormSubmit);
 
 
 // Открытие формы добавления карточки
@@ -80,29 +91,31 @@ addBtn.addEventListener('click', () => openPopup(addForm));
 // Создание карточки
 function createCard(titleValue, linkValue) {
   const card = cardTemplate.querySelector('.element').cloneNode(true);
-  const popup = document.querySelector('.popup_element');
+  const elemTitle = card.querySelector('.element__title');
+  const elemImg = card.querySelector('.element__img');
+  const likeBtn = card.querySelector('.btn_type_like');
+  const deleteBtn = card.querySelector('.btn_type_remove-card');
+  const cardElem = deleteBtn.closest('.element');
 
-  card.querySelector('.element__title').textContent = titleValue;
-  card.querySelector('.element__img').src = linkValue;
-  card.querySelector('.element__img').alt = titleValue;
+  elemTitle.textContent = titleValue;
+  elemImg.src = linkValue;
+  elemImg.alt = titleValue;
 
   // Лайк карточки
-  card.querySelector('.btn_type_like').addEventListener('click', function(evt) {
+  likeBtn.addEventListener('click', function(evt) {
     evt.target.classList.toggle('btn_type_like-active');
   });
 
   // Открытие попапа
-  card.querySelector('.element__img').addEventListener('click', () => {
-    popup.querySelector('.element__img-caption').textContent = titleValue;
-    popup.querySelector('.element__img_size_full').src = linkValue;
-    popup.querySelector('.element__img_size_full').alt = titleValue;
+  elemImg.addEventListener('click', () => {
+    elemImgPopupCaption.textContent = titleValue;
+    elemImgPopup.src = linkValue;
+    elemImgPopup.alt = titleValue;
     openPopup(popup)
   });
 
   // Удаление карточки
-  const deleteBtn = card.querySelector('.btn_type_remove-card');
   deleteBtn.addEventListener('click', function() {
-  const cardElem = deleteBtn.closest('.element');
   cardElem.remove();
   });
 
@@ -114,16 +127,15 @@ function addCard() {
   elements.prepend(createCard(title.value, link.value));
 }
 
-function formSubmitHandlerTypeAdd(evt) {
+function handleAddFormSubmit(evt) {
   evt.preventDefault()
   addCard(title.value, link.value);
 
-  title.value = '';
-  link.value = '';
+  evt.target.reset()
   closePopup(addForm);
 }
 
-formAdd.addEventListener('submit', formSubmitHandlerTypeAdd);
+formAdd.addEventListener('submit', handleAddFormSubmit);
 
 // 6 стандартных карточек
 initialCards.forEach(function(item) {
