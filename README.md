@@ -9,5 +9,6 @@
 * HTML5
 * CSS3
 * JavaScript
+* Webpack
 
 Проект доступен в GH Pages по ссылке: https://mxs741.github.io/mesto-project/

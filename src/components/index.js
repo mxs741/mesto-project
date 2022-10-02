@@ -1,3 +1,4 @@
+import './pages/index.css';
 // Открытие/закрытие формы редактирования
 const editBtn = document.querySelector('.btn_type_edit');
 const editFormPopup = document.querySelector('.popup_edit');
