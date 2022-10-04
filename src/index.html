@@ -54,12 +54,18 @@
   <div class="form popup popup_edit">
     <div class="form__window">
       <h2 class="form__title">Редактировать профиль</h2>
-      <form class="form__edit" action="/" method="POST" name="form-edit-profile">
+      <form class="form__edit" action="/" method="POST" name="form-edit-profile" novalidate>
         <fieldset class="form__fieldset">
-          <input class="form__input form__input_name" type="text" value="Жак-Ив Кусто">
-          <input class="form__input form__input_description" type="text" value="Исследователь океана">
+          <label class="form__field">
+            <input class="form__input form__input_name" id="input-name" type="text" value="Жак-Ив Кусто" required minlength="2" maxlength="40" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
+            <span class="form__error-message input-name-error form__input_name-error"></span>
+          </label>
+          <label class="form__field">
+            <input class="form__input form__input_description" id="input-description" type="text" value="Исследователь океана" required minlength="2" maxlength="200" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
+            <span class="form__error-message input-description-error form__input_description-error"></span>
+          </label>
         </fieldset>
-        <button class="form__btn form__btn_type_save" type="submit">Сохранить</button>
+        <button class="form__btn form__btn_type_save form__btn_type_error" type="submit">Сохранить</button>
         <button class="btn_type_close btn_type_close-edit" type="button"></button>
       </form>
     </div>
@@ -70,8 +76,14 @@
       <h2 class="form__title">Новое место</h2>
       <form class="form__add" action="/" method="POST" name="form-add-card">
         <fieldset class="form__fieldset">
-          <input class="form__input form__input_type_name" type="text" placeholder="Название">
-          <input class="form__input form__input_type_link" type="text" placeholder="Ссылка на картинку">
+          <label class="form__field">
+            <input class="form__input form__input_type_name" id="input-name-place" type="text" placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
+            <span class="form__error-message input-name-place-error form__input_type_name-error"></span>
+          </label>
+          <label class="form__field">
+            <input class="form__input form__input_type_link" id="input-url" type="url" placeholder="Ссылка на картинку" required>
+            <span class="form__error-message input-url-error form__input_type_link-error"></span>
+          </label>
         </fieldset>
         <button class="form__btn form__btn_type_create" type="submit">Создать</button>
         <button class="btn_type_close btn_type_close-add" type="button"></button>

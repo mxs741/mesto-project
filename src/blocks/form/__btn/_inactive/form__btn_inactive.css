@@ -1,0 +1,10 @@
+.form__btn_inactive {
+  background-color: #fff;
+  color: #c4c4c4;
+  outline: 1px solid #c4c4c4;
+  cursor: default;
+}
+
+.form__btn_inactive:hover {
+  opacity: 1;
+}

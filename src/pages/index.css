@@ -19,8 +19,13 @@
 @import url(../blocks/form/__window/form__window.css);
 @import url(../blocks/form/__title/form__title.css);
 @import url(../blocks/form/__fieldset/form__fieldset.css);
+@import url(../blocks/form/__field/form__field.css);
 @import url(../blocks/form/__input/form__input.css);
+@import url(../blocks/form/__input/_type/form__input_type_error.css);
+@import url(../blocks/form/__error-message/form__error-message.css);
+@import url(../blocks/form/__error-message/_activate/form__error-message_activate.css);
 @import url(../blocks/form/__btn/form__btn.css);
+@import url(../blocks/form/__btn/_inactive/form__btn_inactive.css);
 @import url(../blocks/btn/_type/btn_type_close.css);
 
 @import url(../blocks/popup/popup.css);
