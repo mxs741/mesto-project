@@ -3,4 +3,10 @@
   display: block;
   height: 282px;
   width: 282px;
+  cursor: pointer;
+  transition: opacity .2s linear;
+}
+
+.element__img:hover {
+  opacity: .95;
 }

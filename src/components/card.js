@@ -1,37 +1,12 @@
-import {openPopup} from './utils.js';
+import {openPopup} from './modal.js';
 const title = document.querySelector('.form__input_type_name');
 const link = document.querySelector('.form__input_type_link');
 const elements = document.querySelector('.elements');
 const cardTemplate = document.querySelector('#element-template').content;
-const popup = document.querySelector('.popup_element');
-const elemImgPopup = popup.querySelector('.element__img_size_full');
-const elemImgPopupCaption = popup.querySelector('.element__img-caption');
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+const imgPopup = document.querySelector('.popup_element');
+const elemImgPopup = imgPopup.querySelector('.element__img_size_full');
+const elemImgPopupCaption = imgPopup.querySelector('.element__img-caption');
+
 
 // Создание карточки
 function createCard(titleValue, linkValue) {
@@ -46,35 +21,37 @@ function createCard(titleValue, linkValue) {
   elemImg.src = linkValue;
   elemImg.alt = titleValue;
 
-  // Лайк карточки
-  likeBtn.addEventListener('click', function(evt) {
-    evt.target.classList.toggle('btn_type_like-active');
-  });
+  likeBtn.addEventListener('click', setLike);
 
   // Открытие попапа
   elemImg.addEventListener('click', () => {
     elemImgPopupCaption.textContent = titleValue;
     elemImgPopup.src = linkValue;
     elemImgPopup.alt = titleValue;
-    openPopup(popup);
+    openPopup(imgPopup);
   });
 
   // Удаление карточки
   deleteBtn.addEventListener('click', function() {
-  cardElem.remove();
+    delCard(cardElem);
   });
 
   return card;
 };
 
+// Лайк карточки
+function setLike(evt) {
+  evt.target.classList.toggle('btn_type_like-active');
+};
+
+// Удаление карточки
+function delCard(element) {
+  element.remove();
+};
+
 // Добавление карточки на страницу
 function addCard() {
   elements.prepend(createCard(title.value, link.value));
-}
+};
 
-// 6 стандартных карточек
-initialCards.forEach(function(item) {
-  elements.append(createCard(item.name, item.link));
-});
-
-export {addCard, createCard, title, link};
+export {addCard, createCard, title, link, elements};
