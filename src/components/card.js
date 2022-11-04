@@ -29,6 +29,10 @@ function createCard(titleValue, linkValue, likesCountValue, ownIdValue, cardIdVa
     likes.textContent = '0';
   }
 
+  if (checkLike(likesValue, userIdValue)) {
+    likeBtn.classList.add('btn_type_like-active')
+  }
+
   likeBtn.addEventListener('click', (evt) => {
     if (checkLike(likesValue, userIdValue)) {
       putAwayLike(cardIdValue).then((data) => {
