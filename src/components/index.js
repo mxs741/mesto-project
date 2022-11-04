@@ -2,23 +2,8 @@ import '../pages/index.css';
 import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
 import {elements, createCard, addCard, title, link} from './card.js';
 import enableValidation from './validate.js';
-import {getInitialCards, getProfileInfo, postProfileInfo, postCard, postAvatarLink} from './api.js';
-
-const addForm = document.querySelector('.popup_add');
-const profileName = document.querySelector('.profile__name');
-const profileDescription = document.querySelector('.profile__description');
-const editFormPopup = document.querySelector('.popup_edit');
-const inputName = document.querySelector('.form__input_name');
-const inputDescription = document.querySelector('.form__input_description');
-const editBtn = document.querySelector('.btn_type_edit');
-const addBtn = document.querySelector('.btn_type_add');
-const formEdit = document.querySelector('.form__edit');
-const formAdd = document.querySelector('.form__add');
-const formEditAvatar = document.querySelector('.form__edit-avatar');
-const editAvatarPopup = document.querySelector('.popup_edit-avatar');
-const editAvatar = document.querySelector('.profile__avatar-wrapper');
-const profileAvatar = document.querySelector('.profile__avatar');
-const initialCards = [];
+import {getInitialCards, getProfileInfo, postProfileInfo, postCard, postAvatarLink, removeCard} from './api.js';
+import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, initialCards, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn} from './variables.js';
 
 
 getProfileInfo()
@@ -51,25 +36,23 @@ getProfileInfo()
 
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
-  const btn = document.querySelector('.form__btn_edit-profile')
   evt.preventDefault();
   profileName.textContent = inputName.value;
   profileDescription.textContent = inputDescription.value;
-  btn.textContent = 'Сохранение...'
+  editProfileBtn.textContent = 'Сохранение...'
   postProfileInfo({
     name: profileName.textContent,
     about: profileDescription.textContent
   })
     .then(() => {
       closePopup(editFormPopup);
-      btn.textContent = 'Сохранить'
+      editProfileBtn.textContent = 'Сохранить'
     })
     .catch(err => console.log(err))
 };
 
 // Форма добавления карточки
 function handleAddFormSubmit(evt) {
-  const createBtn = document.querySelector('.form__btn_type_create');
   evt.preventDefault();
   addCard(title.value, link.value);
   createBtn.textContent = 'Сохранение...';
@@ -86,17 +69,15 @@ function handleAddFormSubmit(evt) {
 
 // Форма установки аватара
 function handleFormEditAvatarSubmit(evt) {
-  const inputProfileAvatar = document.querySelector('.form__input-avatar-link');
-  const btn = document.querySelector('.form__btn_edit-avatar')
   evt.preventDefault();
   profileAvatar.src = inputProfileAvatar.value;
-  btn.textContent = 'Сохранение...';
+  editAvatarBtn.textContent = 'Сохранение...';
   postAvatarLink({
     avatar: profileAvatar.src,
   })
     .then(() => {
       closePopup(editAvatarPopup);
-      btn.textContent = 'Сохранить';
+      editAvatarBtn.textContent = 'Сохранить';
     })
     .catch(err => console.log(err))
 };
@@ -131,4 +112,11 @@ formAdd.addEventListener('submit', handleAddFormSubmit);
 closePopupClickingOutside();
 
 // Включить валидацию
-enableValidation();
+enableValidation({
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  btnSelector: '.form__btn',
+  btnInactive: 'form__btn_inactive',
+  formInputError: 'form__input_type_error',
+  formErrorMessage: 'form__error-message_activate',
+});

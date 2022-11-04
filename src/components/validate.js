@@ -1,18 +1,18 @@
-function showErrorMessage(form, input, errorMessage) {
+function showErrorMessage(form, input, errorMessage, set) {
   const inputError = form.querySelector(`.${input.id}-error`);
-  input.classList.add('form__input_type_error');
-  inputError.classList.add('form__error-message_activate');
+  input.classList.add(set.formInputError);
+  inputError.classList.add(set.formErrorMessage);
   inputError.textContent = errorMessage;
 };
 
-function removeErrorMessage(form, input) {
+function removeErrorMessage(form, input, set) {
   const inputError = form.querySelector(`.${input.id}-error`);
-  input.classList.remove('form__input_type_error');
-  inputError.classList.remove('form__error-message_activate');
+  input.classList.remove(set.formInputError);
+  inputError.classList.remove(set.formErrorMessage);
   inputError.textContent = ''
 };
 
-function checkValidity(form, input) {
+function checkValidity(form, input, set) {
   if (input.validity.patternMismatch) {
     input.setCustomValidity(input.dataset.errorMessage);
   } else {
@@ -20,28 +20,28 @@ function checkValidity(form, input) {
   };
 
   if (!input.validity.valid) {
-    showErrorMessage(form, input, input.validationMessage);
+    showErrorMessage(form, input, input.validationMessage, set);
   } else {
-    removeErrorMessage(form, input);
+    removeErrorMessage(form, input, set);
   };
 };
 
-function setEventListeners(form) {
-  const inputList = Array.from(form.querySelectorAll('.form__input'));
-  const button = form.querySelector('.form__btn');
-  toggleButtonState(inputList, button);
+function setEventListeners(form, set) {
+  const inputList = Array.from(form.querySelectorAll(set.inputSelector));
+  const button = form.querySelector(set.btnSelector);
+  toggleButtonState(inputList, button, set);
   inputList.forEach((input) => {
     input.addEventListener('input', () => {
-      checkValidity(form, input);
-      toggleButtonState(inputList, button);
+      checkValidity(form, input, set);
+      toggleButtonState(inputList, button, set);
     });
   });
 };
 
-function enableValidation() {
-  const formList = Array.from(document.querySelectorAll('.form'));
+function enableValidation(set) {
+  const formList = Array.from(document.querySelectorAll(set.formSelector));
   formList.forEach((form) => {
-    setEventListeners(form);
+    setEventListeners(form, set);
   });
 };
 
@@ -51,13 +51,13 @@ function hasInvalidInput(inputList) {
   });
 };
 
-function toggleButtonState(inputList, button) {
+function toggleButtonState(inputList, button, set) {
   if (hasInvalidInput(inputList)) {
     button.disabled = true;
-    button.classList.add('form__btn_inactive');
+    button.classList.add(set.btnInactive);
   } else {
     button.disabled = false;
-    button.classList.remove('form__btn_inactive');
+    button.classList.remove(set.btnInactive);
   };
 };
 

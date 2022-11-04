@@ -1,10 +1,4 @@
-const cfg = {
-  url: 'https://mesto.nomoreparties.co/v1/plus-cohort-16/',
-  headers: {
-    authorization: 'c0fd3183-e813-469f-a9c4-cacdccd89151',
-    'content-type': 'application/json',
-  }
-};
+import {cfg} from './variables.js';
 
 // Получить информацию о пользователе
 function getProfileInfo() {

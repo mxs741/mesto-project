@@ -1,4 +1,4 @@
-const closeButtons = document.querySelectorAll('.btn_type_close');
+import {closeButtons} from './variables.js'
 
 // Закрытие попапа на 'Escape'
 function closePopupWithEscKey(evt) {

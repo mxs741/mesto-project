@@ -1,13 +1,6 @@
 import {openPopup} from './modal.js';
 import {putLike, putAwayLike, removeCard, getProfileInfo} from './api.js';
-
-const title = document.querySelector('.form__input_type_name');
-const link = document.querySelector('.form__input_type_link');
-const elements = document.querySelector('.elements');
-const cardTemplate = document.querySelector('#element-template').content;
-const imgPopup = document.querySelector('.popup_element');
-const elemImgPopup = imgPopup.querySelector('.element__img_size_full');
-const elemImgPopupCaption = imgPopup.querySelector('.element__img-caption');
+import {title, link, elements, cardTemplate, imgPopup, elemImgPopup, elemImgPopupCaption} from './variables.js';
 
 
 // Создание карточки
@@ -77,7 +70,7 @@ function checkLike(likes, ownId) {
   return likes.some((item) => {
     return item._id === ownId
   })
-}
+};
 
 // Удаление карточки
 function delCard(element, cardId) {
