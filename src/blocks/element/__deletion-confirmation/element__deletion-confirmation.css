@@ -1,0 +1,6 @@
+.element__deletion-confirmation {
+  height: 181px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

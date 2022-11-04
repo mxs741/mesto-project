@@ -4,7 +4,7 @@
   left: 0;
   opacity: 0;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   top: 0;
   transition: visibility .2s, opacity .2s linear;
   visibility: hidden;

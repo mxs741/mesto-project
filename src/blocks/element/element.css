@@ -4,4 +4,9 @@
   justify-self: center;
   position: relative;
   width: 282px;
+  transition: opacity .2s linear;
+}
+
+.element:hover {
+  opacity: .8;
 }

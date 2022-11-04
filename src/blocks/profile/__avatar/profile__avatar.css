@@ -1,5 +1,6 @@
 .profile__avatar {
   background-color: #c4c4c4;
+  display: block;
   border-radius: 50%;
   height: 120px;
   width: 120px;

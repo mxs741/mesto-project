@@ -14,13 +14,15 @@
     <main class="main">
 
       <section class="profile">
-        <img class="profile__avatar" src="<%=require('./images/photo.png')%>" alt="Аватар.">
+        <div class="profile__avatar-wrapper">
+          <img class="profile__avatar" src="" alt="Аватар.">
+        </div>
         <div class="profile__info">
           <div class="profile__row-wrapper">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
+            <h1 class="profile__name"></h1>
             <button class="btn btn_type_edit" type="button"></button>
           </div>
-          <p class="profile__description">Исследователь океана</p>
+          <p class="profile__description"></p>
         </div>
         <button class="btn btn_type_add" type="button"></button>
       </section>
@@ -31,7 +33,10 @@
             <img class="element__img" src="" alt="">
             <div class="element__row">
               <h2 class="element__title"></h2>
-              <button class="btn btn_type_like" type="button"></button>
+              <div class="element__wrapper-of-likes">
+                <button class="btn btn_type_like" type="button"></button>
+                <span class="element__number-of-likes"></span>
+              </div>
             </div>
             <button class="btn btn_type_remove-card"></button>
           </div>
@@ -43,6 +48,13 @@
             <button class="btn_type_close btn_type_close-img" type="button"></button>
           </figure>
         </div>
+        <!-- <div class="popup popup_confirm">
+          <div class="form__window element__deletion-confirmation">
+            <h2 class="form__title">Вы уверены?</h2>
+            <button class="element__del-confirm-btn form__btn" type="submit">Да</button>
+            <button class="btn_type_close" type="button"></button>
+          </div>
+        </div> -->
 
       </section>
     </main>
@@ -50,6 +62,21 @@
       <p class="footer__copyright">&#169; 2022 Mesto Russia</p>
     </footer>
 
+  </div>
+  <div class="form popup popup_edit-avatar">
+    <div class="form__window form__window_type_edit-avatar">
+      <h2 class="form__title">Обновить аватар</h2>
+      <form class="form__edit-avatar" action="/" method="POST" name="form-edit-avatar">
+        <fieldset class="form__fieldset">
+          <label class="form__field">
+            <input class="form__input form__input-avatar-link" id="input-avatar-url" type="url" placeholder="Ссылка на аватар" required>
+            <span class="form__error-message input-avatar-url-error form__input_type_link-error"></span>
+          </label>
+        </fieldset>
+        <button class="form__btn form__btn_type_save form__btn_type_error form__btn_edit-avatar" type="submit">Сохранить</button>
+        <button class="btn_type_close" type="button"></button>
+      </form>
+    </div>
   </div>
   <div class="form popup popup_edit">
     <div class="form__window">
@@ -65,7 +92,7 @@
             <span class="form__error-message input-description-error form__input_description-error"></span>
           </label>
         </fieldset>
-        <button class="form__btn form__btn_type_save form__btn_type_error" type="submit">Сохранить</button>
+        <button class="form__btn form__btn_type_save form__btn_type_error form__btn_edit-profile" type="submit">Сохранить</button>
         <button class="btn_type_close btn_type_close-edit" type="button"></button>
       </form>
     </div>

@@ -1,0 +1,24 @@
+.profile__avatar-wrapper {
+  border-radius: 50%;
+  position: relative;
+}
+
+.profile__avatar-wrapper::after {
+  background-image: url('../../../images/vector.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  content: '';
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transition: all .2s linear;
+  width: 100%;
+}
+
+.profile__avatar-wrapper:hover::after {
+  background-color: rgba(0, 0, 0, .8);
+  opacity: 1;
+}
