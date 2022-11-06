@@ -16,7 +16,6 @@ export const editAvatarPopup = document.querySelector('.popup_edit-avatar');
 export const editAvatar = document.querySelector('.profile__avatar-wrapper');
 export const inputProfileAvatar = document.querySelector('.form__input-avatar-link');
 export const profileAvatar = document.querySelector('.profile__avatar');
-export const initialCards = [];
 export const cfg = {
   url: 'https://mesto.nomoreparties.co/v1/plus-cohort-16/',
   headers: {

@@ -1,38 +1,21 @@
 import '../pages/index.css';
 import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
-import {elements, createCard, addCard, title, link} from './card.js';
+import {createCard, addCard} from './card.js';
 import enableValidation from './validate.js';
-import {getInitialCards, getProfileInfo, postProfileInfo, postCard, postAvatarLink, removeCard} from './api.js';
-import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, initialCards, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn} from './variables.js';
+import {getInitialCards, getProfileInfo, postProfileInfo, postCard, postAvatarLink, putLike, putAwayLike, removeCard} from './api.js';
+import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements} from './variables.js';
 
-
-getProfileInfo()
+// Получение информации о пользователе и карточках
+Promise.all([getProfileInfo(), getInitialCards()])
   .then(data => {
-    profileName.textContent = data.name;
-    profileDescription.textContent = data.about;
-    profileAvatar.src = data.avatar;
-    const userId = data._id;
-    getInitialCards()
-      .then(data => {
-        for (let i = 0; i < data.length; i++) {
-          initialCards.push(
-            {
-              name: data[i].name,
-              link: data[i].link,
-              _id: data[i]._id,
-              owner_id: data[i].owner._id,
-              likes: data[i].likes,
-            }
-          )
-        }
-      })
-      .then(() => {
-        initialCards.forEach(function(item) {
-          elements.append(createCard(item.name, item.link, item.likes.length, item.owner_id, item._id, item.likes, userId));
-        });
-      })
-      .catch(err => console.log(err))
+    profileName.textContent = data[0].name;
+    profileDescription.textContent = data[0].about;
+    profileAvatar.src = data[0].avatar;
+    data[1].forEach(function(item) {
+      elements.append(createCard(item.name, item.link, item.likes.length, item.owner._id, item._id, item.likes, data[0]._id, removeCard, putLike, putAwayLike));
+    });
   })
+  .catch(err => console.log(err))
 
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
@@ -46,9 +29,11 @@ function handleProfileFormSubmit(evt) {
   })
     .then(() => {
       closePopup(editFormPopup);
-      editProfileBtn.textContent = 'Сохранить'
     })
     .catch(err => console.log(err))
+    .finally(() => {
+      editProfileBtn.textContent = 'Сохранить';
+    })
 };
 
 // Форма добавления карточки
@@ -62,9 +47,11 @@ function handleAddFormSubmit(evt) {
       createBtn.disabled = true;
       createBtn.classList.add('form__btn_inactive');
       closePopup(addForm);
-      createBtn.textContent = 'Создать';
     })
     .catch(err => console.log(err))
+    .finally(() => {
+      createBtn.textContent = 'Создать';
+    })
 };
 
 // Форма установки аватара
@@ -80,18 +67,17 @@ function handleFormEditAvatarSubmit(evt) {
       editAvatarBtn.textContent = 'Сохранить';
     })
     .catch(err => console.log(err))
+    .finally(() => {
+      editAvatarBtn.textContent = 'Сохранить';
+    })
 };
 
 
 // Открытие формы редактирования профиля
 editBtn.addEventListener('click', function() {
   openPopup(editFormPopup);
-  getProfileInfo()
-    .then(data => {
-      inputName.value = data.name;
-      inputDescription.value = data.about;
-    })
-    .catch(err => console.log(err))
+  inputName.value = profileName.textContent;
+  inputDescription.value = profileDescription.textContent;
 });
 
 // Отправка формы редактирования профиля

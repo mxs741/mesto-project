@@ -24,6 +24,12 @@ function postProfileInfo(newPost) {
       avatar: newPost.avatar,
     }),
   })
+  .then(res => {
+    if (res.ok) {
+      return res.json()
+    }
+    return Promise.reject(`Ошибка: ${res.status}`)
+  })
 };
 
 // Изменить аватар
@@ -34,6 +40,12 @@ function postAvatarLink(newPost) {
     body: JSON.stringify({
       avatar: newPost.avatar,
     }),
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json()
+    }
+    return Promise.reject(`Ошибка: ${res.status}`)
   })
 };
 
@@ -60,7 +72,12 @@ function postCard(titleValue, linkValue) {
       link: linkValue,
     }),
   })
-  .then(res => console.log(res.json()))
+  .then(res => {
+    if (res.ok) {
+      return res.json()
+    }
+    return Promise.reject(`Ошибка: ${res.status}`)
+  })
 };
 
 // Удаление карточки
@@ -68,6 +85,12 @@ function removeCard(cardId) {
   return fetch(`${cfg.url}cards/${cardId}`, {
     method: 'DELETE',
     headers: cfg.headers,
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json()
+    }
+    return Promise.reject(`Ошибка: ${res.status}`)
   })
 };
 
