@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
-import {createCard, addCard} from './card.js';
+import {createCard, addCard, checkLike, isLiked, checkAndAddLikeIcon, setLike} from './card.js';
 import enableValidation from './validate.js';
 import {getInitialCards, getProfileInfo, postProfileInfo, postCard, postAvatarLink, putLike, putAwayLike, removeCard} from './api.js';
 import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements} from './variables.js';
@@ -12,22 +12,42 @@ Promise.all([getProfileInfo(), getInitialCards()])
     profileDescription.textContent = data[0].about;
     profileAvatar.src = data[0].avatar;
     data[1].forEach(function(item) {
-      elements.append(createCard(item.name, item.link, item.likes.length, item.owner._id, item._id, item.likes, data[0]._id, removeCard, putLike, putAwayLike));
+      elements.append(createCard(item.name, item.link, item._id, data[0]._id, likesHandler, delCardBtnHandler, item.likes.length, item.owner._id));
     });
   })
   .catch(err => console.log(err))
 
+
+// Обработчик кнопки лайка
+function likesHandler(userId, cardId, likesCounter, evt) {
+  (isLiked(evt) ? putAwayLike(cardId) : putLike(cardId))
+    .then(data => {
+      setLike(likesCounter, data.likes.length);
+      checkAndAddLikeIcon(evt, checkLike(data.likes, userId))
+    })
+    .catch(err => console.log(err))
+};
+
+// Обработчик кнопки удаления карточки
+function delCardBtnHandler(element, cardId) {
+  removeCard(cardId)
+    .then(() => {
+      element.remove();
+    })
+    .catch(err => console.log(err))
+};
+
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = inputName.value;
-  profileDescription.textContent = inputDescription.value;
   editProfileBtn.textContent = 'Сохранение...'
   postProfileInfo({
     name: profileName.textContent,
     about: profileDescription.textContent
   })
     .then(() => {
+      profileName.textContent = inputName.value;
+      profileDescription.textContent = inputDescription.value;
       closePopup(editFormPopup);
     })
     .catch(err => console.log(err))
@@ -39,10 +59,10 @@ function handleProfileFormSubmit(evt) {
 // Форма добавления карточки
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
-  addCard(title.value, link.value);
   createBtn.textContent = 'Сохранение...';
   postCard(title.value, link.value)
-    .then(() => {
+    .then((data) => {
+      addCard(data._id, data.owner._id, likesHandler, delCardBtnHandler);
       evt.target.reset();
       createBtn.disabled = true;
       createBtn.classList.add('form__btn_inactive');
@@ -57,21 +77,19 @@ function handleAddFormSubmit(evt) {
 // Форма установки аватара
 function handleFormEditAvatarSubmit(evt) {
   evt.preventDefault();
-  profileAvatar.src = inputProfileAvatar.value;
   editAvatarBtn.textContent = 'Сохранение...';
   postAvatarLink({
     avatar: profileAvatar.src,
   })
     .then(() => {
+      profileAvatar.src = inputProfileAvatar.value;
       closePopup(editAvatarPopup);
-      editAvatarBtn.textContent = 'Сохранить';
     })
     .catch(err => console.log(err))
     .finally(() => {
       editAvatarBtn.textContent = 'Сохранить';
     })
 };
-
 
 // Открытие формы редактирования профиля
 editBtn.addEventListener('click', function() {
