@@ -12,9 +12,7 @@ function closePopupWithEscKey(evt) {
 function closePopupClickingOutside() {
     const popupOpenedArr = Array.from(document.querySelectorAll('.popup'));
     popupOpenedArr.forEach((popup) => {
-      popup.addEventListener('click', (evt) => {
-        evt.target.classList.remove('popup_opened');
-    });
+      popup.addEventListener('click', () => closePopup(popup));
   });
 };
 
