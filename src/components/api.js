@@ -85,3 +85,5 @@ export class Api {
     .then(this._handleResponse)
   }
 }
+
+export const api = new Api(cfg);

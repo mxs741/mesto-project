@@ -3,9 +3,7 @@ import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
 import {createCard, addCard, checkLike, isLiked, checkAndAddLikeIcon, setLike} from './card.js';
 import enableValidation from './validate.js';
 import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements, cfg} from './variables.js';
-import {Api} from './api.js'
-
-const api = new Api(cfg)
+import {api} from './api.js';
 
 // Получение информации о пользователе и карточках
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
