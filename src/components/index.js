@@ -2,11 +2,15 @@ import '../pages/index.css';
 import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
 import {createCard, addCard, checkLike, isLiked, checkAndAddLikeIcon, setLike} from './card.js';
 import enableValidation from './validate.js';
-import {getInitialCards, getProfileInfo, postProfileInfo, postCard, postAvatarLink, putLike, putAwayLike, removeCard} from './api.js';
-import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements} from './variables.js';
+// import {getInitialCards, getProfileInfo, postProfileInfo, postCard, postAvatarLink, putLike, putAwayLike, removeCard} from './api.js';
+import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements, cfg} from './variables.js';
+import {Api} from './1.js'
+
+const api = new Api(cfg)
+console.log(api.getInitialCards())
 
 // Получение информации о пользователе и карточках
-Promise.all([getProfileInfo(), getInitialCards()])
+Promise.all([api.getProfileInfo(), api.getInitialCards()])
   .then(data => {
     profileName.textContent = data[0].name;
     profileDescription.textContent = data[0].about;
@@ -20,7 +24,7 @@ Promise.all([getProfileInfo(), getInitialCards()])
 
 // Обработчик кнопки лайка
 function likesHandler(userId, cardId, likesCounter, evt) {
-  (isLiked(evt) ? putAwayLike(cardId) : putLike(cardId))
+  (isLiked(evt) ? api.putAwayLike(cardId) : api.putLike(cardId))
     .then(data => {
       setLike(likesCounter, data.likes.length);
       checkAndAddLikeIcon(evt, checkLike(data.likes, userId))
@@ -30,7 +34,7 @@ function likesHandler(userId, cardId, likesCounter, evt) {
 
 // Обработчик кнопки удаления карточки
 function delCardBtnHandler(element, cardId) {
-  removeCard(cardId)
+  api.removeCard(cardId)
     .then(() => {
       element.remove();
     })
@@ -41,7 +45,7 @@ function delCardBtnHandler(element, cardId) {
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   editProfileBtn.textContent = 'Сохранение...'
-  postProfileInfo({
+  api.postProfileInfo({
     name: profileName.textContent,
     about: profileDescription.textContent
   })
@@ -60,7 +64,7 @@ function handleProfileFormSubmit(evt) {
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
   createBtn.textContent = 'Сохранение...';
-  postCard(title.value, link.value)
+  api.postCard(title.value, link.value)
     .then((data) => {
       addCard(data._id, data.owner._id, likesHandler, delCardBtnHandler);
       evt.target.reset();
@@ -78,7 +82,7 @@ function handleAddFormSubmit(evt) {
 function handleFormEditAvatarSubmit(evt) {
   evt.preventDefault();
   editAvatarBtn.textContent = 'Сохранение...';
-  postAvatarLink({
+  api.postAvatarLink({
     avatar: profileAvatar.src,
   })
     .then(() => {
