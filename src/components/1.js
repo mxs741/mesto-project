@@ -1,26 +1,28 @@
-import api from './api.js';
+import {api} from './api.js';
+import {elemImgPopupCaption, elemImgPopup, imgPopup, elements} from './variables.js';
+import { openPopup } from './modal.js';
 
 export class Card {
-  constructor(data, myId, templateSelector) {
+  constructor(data, myId, cardTemplate) {
+    this._id = data._id;
     this._name = data.name;
     this._link = data.link;
-    this._id = data._id;
     this._likes = data.likes;
     this._likesLength = data.likes.length;
     this._ownerId = data.owner._id;
     this._myId = myId;
-    this._tempCard = templateSelector.querySelector('.element').cloneNode(true);
+    this._tempCard = cardTemplate.querySelector('.element').cloneNode(true);
     this._tempElemTitle = this._tempCard.querySelector('.element__title');
     this._tempElemImg = this._tempCard.querySelector('.element__img');
     this._tempLikeBtn = this._tempCard.querySelector('.btn_type_like');
     this._tempDeleteBtn = this._tempCard.querySelector('.btn_type_remove-card');
     this._tempLikes = this._tempCard.querySelector('.element__number-of-likes');
-    this._cardElem = this._tempDeleteBtn.closest('.element'); // если я правильно поняла, это тот эл-т что вставляем на стр -> переименовала с tempCardElem
+   // this._cardElem = this._tempDeleteBtn.closest('.element'); // если я правильно поняла, это тот эл-т что вставляем на стр -> переименовала с tempCardElem
   }
 
   // отрисовка карточки на странице
   renderCard(container, inAfter) {
-    inAfter ? container.append(this._cardElem) : container.prepend(this._cardElem);
+    inAfter ? container.append(this._tempCard) : container.prepend(this._tempCard);
   }
 
   // Проверить наличие класса active у кнопки
@@ -28,14 +30,11 @@ export class Card {
     return this._tempLikeBtn.classList.contains('btn_type_like-active');
   };
 
-
-  // вот дальше ... нужно все время работать с обновляемыми данными likes
-  // Изменить число лайков в карточке
-  _setLike(data) {
-    this._tempLikes.textContent = data.likes.length; //проверить что кол-во лайков берется из response
+  _setLike(res) {
+    this._tempLikes.textContent = res.likes.length; //проверить что кол-во лайков берется из response
   };
 
-  // Проверить наличие лайка от пользователя и изменить цвет кнопкиthis._likes
+  // Проверить наличие лайка от пользователя и изменить цвет кнопки this._likes
   _checkAndAddLikeIcon() {
     if(this._checkLike()) {
       this._tempLikeBtn.classList.add('btn_type_like-active');
@@ -46,33 +45,35 @@ export class Card {
 
   // Проверить наличие лайка от пользователя
   _checkLike() {
-    return data.likes.some((item) => {
+    return this._likes.some((item) => {
       return item._id === this._myId;
     });
   };
 
-
   // Обработчик кнопки лайка
   _likesHandler() {
-    this._isLiked() ? api.putAwayLike(this._cardElem) : api.putLike(this._cardElem)
+    (this._isLiked() ? api.putAwayLike(this._id) : api.putLike(this._id))
     .then(data => {
       this._setLike(data);
-
-      //мне кажется тут вообще этонадо then сделать, если запрос обработался, тогда меняй стили лайка....
-      //думаю что checkAndAddLikeIcon и checkLike надо переписать...
-      checkAndAddLikeIcon(evt, checkLike(data.likes, userId))
+      this._tempLikeBtn.classList.toggle('btn_type_like-active');
     })
     .catch(err => console.log(err))
   };
 
+  // Обработчик кнопки удаления карточки
+  _delCardBtnHandler() {      
+    api.removeCard(this._id)
+      .then(() => {
+        this._tempCard.remove();
+      })
+      .catch(err => console.log(err))
+};
 
   createCard(data) {
     this._tempElemTitle.textContent = this._name;
     this._tempElemImg.src = this._link;
     this._tempElemImg.alt = this._name;
-
-    //Почему мы тут при отрисовке не проверяем есть ли карточки, которые мы лайкнули ранее?
-    //Если в массиве владельцев лайков есть наш id, то сразу добавляем класс active лайку
+    this._checkAndAddLikeIcon();
 
     if (this._likesLength) {
       this._tempLikes.textContent = this._likesLength;
@@ -80,8 +81,8 @@ export class Card {
       this._tempLikes.textContent = '0';
     }
 
-    this._tempLikeBtn.addEventListener('click', (evt) => {
-      likesHandler(userIdValue, cardIdValue, this._tempLikes, evt);
+    this._tempLikeBtn.addEventListener('click', () => {
+      this._likesHandler();
     });
 
     this._tempDeleteBtn.addEventListener('click', () => {
@@ -90,17 +91,22 @@ export class Card {
 
     // Открытие попапа
     this._tempElemImg.addEventListener('click', () => {
-      elemImgPopupCaption.textContent = titleValue;
-      elemImgPopup.src = linkValue;
-      elemImgPopup.alt = titleValue;
+      elemImgPopupCaption.textContent = this._name;
+      elemImgPopup.src = this._link;
+      elemImgPopup.alt = this._name;
       openPopup(imgPopup);
     });
 
     // Сравнить ID пользователя с ID создателя карточки для отображения иконки удаления
-    if (ownIdValue && userIdValue !== ownIdValue) {
-      deleteBtn.style.display = 'none';
+    if (this._myId !== this._ownerId) {
+      this._tempDeleteBtn.style.display = 'none';
     };
 
     return this._tempCard;
   }
+
+  // Добавление карточки на страницу
+  addCard() {
+  elements.prepend(this.createCard());
+};
 }
