@@ -1,10 +1,9 @@
 import '../pages/index.css';
 import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
-import {createCard, addCard, checkLike, isLiked, checkAndAddLikeIcon, setLike} from './card.js';
 import enableValidation from './validate.js';
 import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements, cfg, cardTemplate} from './variables.js';
 import {api} from './api.js';
-import {Card} from './1.js';
+import {Card} from './card.js';
 
 // Получение информации о пользователе и карточках
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
@@ -16,30 +15,9 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
       const card = new Card(item, data[0]._id, cardTemplate);
       card.createCard();
       card.renderCard(elements, true);
-      //elements.append(createCard(item.name, item.link, item._id, data[0]._id, likesHandler, delCardBtnHandler, item.likes.length, item.owner._id));
     });
   })
   .catch(err => console.log(err))
-
-
-// // Обработчик кнопки лайка
-// function likesHandler(userId, cardId, likesCounter, evt) {
-//   (isLiked(evt) ? api.putAwayLike(cardId) : api.putLike(cardId))
-//     .then(data => {
-//       setLike(likesCounter, data.likes.length);
-//       checkAndAddLikeIcon(evt, checkLike(data.likes, userId))
-//     })
-//     .catch(err => console.log(err))
-// };
-
-// // Обработчик кнопки удаления карточки
-// function delCardBtnHandler(element, cardId) {
-//   api.removeCard(cardId)
-//     .then(() => {
-//       element.remove();
-//     })
-//     .catch(err => console.log(err))
-// };
 
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
@@ -66,7 +44,8 @@ function handleAddFormSubmit(evt) {
   createBtn.textContent = 'Сохранение...';
   api.postCard(title.value, link.value)
     .then((data) => {
-      addCard(data._id, data.owner._id, likesHandler, delCardBtnHandler);
+      const card = new Card(data, data.owner._id, cardTemplate);
+      card.addCard(data);
       evt.target.reset();
       createBtn.disabled = true;
       createBtn.classList.add('form__btn_inactive');

@@ -1,78 +1,113 @@
-import {openPopup} from './modal.js';
-import {title, link, elements, cardTemplate, imgPopup, elemImgPopup, elemImgPopupCaption} from './variables.js';
+import {api} from './api.js';
+import {elemImgPopupCaption, elemImgPopup, imgPopup, elements} from './variables.js';
+import { openPopup } from './modal.js';
 
-// Создание карточки
-function createCard(titleValue, linkValue, cardIdValue, userIdValue, likesHandler, delCardHandler, likesCountValue, ownIdValue) {
-  const card = cardTemplate.querySelector('.element').cloneNode(true);
-  const elemTitle = card.querySelector('.element__title');
-  const elemImg = card.querySelector('.element__img');
-  const likeBtn = card.querySelector('.btn_type_like');
-  const deleteBtn = card.querySelector('.btn_type_remove-card');
-  const likes = card.querySelector('.element__number-of-likes');
-  const cardElem = deleteBtn.closest('.element');
-
-  elemTitle.textContent = titleValue;
-  elemImg.src = linkValue;
-  elemImg.alt = titleValue;
-  if (likesCountValue) {
-    likes.textContent = likesCountValue;
-  } else {
-    likes.textContent = '0';
+export class Card {
+  constructor(data, myId, cardTemplate) {
+    this._id = data._id;
+    this._name = data.name;
+    this._link = data.link;
+    this._likes = data.likes;
+    this._likesLength = data.likes.length;
+    this._ownerId = data.owner._id;
+    this._myId = myId;
+    this._tempCard = cardTemplate.querySelector('.element').cloneNode(true);
+    this._tempElemTitle = this._tempCard.querySelector('.element__title');
+    this._tempElemImg = this._tempCard.querySelector('.element__img');
+    this._tempLikeBtn = this._tempCard.querySelector('.btn_type_like');
+    this._tempDeleteBtn = this._tempCard.querySelector('.btn_type_remove-card');
+    this._tempLikes = this._tempCard.querySelector('.element__number-of-likes');
+   // this._cardElem = this._tempDeleteBtn.closest('.element'); // если я правильно поняла, это тот эл-т что вставляем на стр -> переименовала с tempCardElem
   }
 
-  likeBtn.addEventListener('click', (evt) => {
-    likesHandler(userIdValue, cardIdValue, likes, evt);
-  });
+  // отрисовка карточки на странице
+  renderCard(container, inAfter) {
+    inAfter ? container.append(this._tempCard) : container.prepend(this._tempCard);
+  }
 
-  deleteBtn.addEventListener('click', () => {
-    delCardHandler(cardElem, cardIdValue);
-  });
-
-  // Открытие попапа
-  elemImg.addEventListener('click', () => {
-    elemImgPopupCaption.textContent = titleValue;
-    elemImgPopup.src = linkValue;
-    elemImgPopup.alt = titleValue;
-    openPopup(imgPopup);
-  });
-
-  // Сравнить ID пользователя с ID создателя карточки для отображения иконки удаления
-  if (ownIdValue && userIdValue !== ownIdValue) {
-    deleteBtn.style.display = 'none';
+  // Проверить наличие класса active у кнопки
+  _isLiked() {
+    return this._tempLikeBtn.classList.contains('btn_type_like-active');
   };
 
-  return card;
+  _setLike(res) {
+    this._tempLikes.textContent = res.likes.length; //проверить что кол-во лайков берется из response
+  };
+
+  // Проверить наличие лайка от пользователя и изменить цвет кнопки this._likes
+  _checkAndAddLikeIcon() {
+    if(this._checkLike()) {
+      this._tempLikeBtn.classList.add('btn_type_like-active');
+    } else {
+      this._tempLikeBtn.classList.remove('btn_type_like-active');
+    }
+  };
+
+  // Проверить наличие лайка от пользователя
+  _checkLike() {
+    return this._likes.some((item) => {
+      return item._id === this._myId;
+    });
+  };
+
+  // Обработчик кнопки лайка
+  _likesHandler() {
+    (this._isLiked() ? api.putAwayLike(this._id) : api.putLike(this._id))
+    .then(data => {
+      this._setLike(data);
+      this._tempLikeBtn.classList.toggle('btn_type_like-active');
+    })
+    .catch(err => console.log(err))
+  };
+
+  // Обработчик кнопки удаления карточки
+  _delCardBtnHandler() {      
+    api.removeCard(this._id)
+      .then(() => {
+        this._tempCard.remove();
+      })
+      .catch(err => console.log(err))
 };
 
-// Проверить наличие лайка от пользователя
-function checkLike(likes, userId) {
-  return likes.some((item) => {
-    return item._id === userId
-  });
-};
+  createCard(data) {
+    this._tempElemTitle.textContent = this._name;
+    this._tempElemImg.src = this._link;
+    this._tempElemImg.alt = this._name;
+    this._checkAndAddLikeIcon();
 
-// Проверить наличие лайка от пользователя и изменить цвет кнопки
-function checkAndAddLikeIcon(evt, check) {
-  if(check) {
-    evt.target.classList.add('btn_type_like-active');
-  } else {
-    evt.target.classList.remove('btn_type_like-active');
+    if (this._likesLength) {
+      this._tempLikes.textContent = this._likesLength;
+    } else {
+      this._tempLikes.textContent = '0';
+    }
+
+    this._tempLikeBtn.addEventListener('click', () => {
+      this._likesHandler();
+    });
+
+    this._tempDeleteBtn.addEventListener('click', () => {
+      this._delCardBtnHandler();
+    });
+
+    // Открытие попапа
+    this._tempElemImg.addEventListener('click', () => {
+      elemImgPopupCaption.textContent = this._name;
+      elemImgPopup.src = this._link;
+      elemImgPopup.alt = this._name;
+      openPopup(imgPopup);
+    });
+
+    // Сравнить ID пользователя с ID создателя карточки для отображения иконки удаления
+    if (this._myId !== this._ownerId) {
+      this._tempDeleteBtn.style.display = 'none';
+    };
+
+    return this._tempCard;
   }
-};
 
-// Проверить наличие класса active у кнопки
-function isLiked(evt) {
-  return evt.target.classList.contains('btn_type_like-active')
-};
-
-// Изменить число лайков в карточке
-function setLike(likesCounter, dataOfLikes) {
-  likesCounter.textContent = dataOfLikes;
-};
-
-// Добавление карточки на страницу
-function addCard(cardId, userId, likesHandler, delCardHandler) {
-  elements.prepend(createCard(title.value, link.value, cardId, userId, likesHandler, delCardHandler));
-};
-
-export {addCard, createCard, checkLike, setLike, checkAndAddLikeIcon, isLiked};
+  // Добавление карточки на страницу
+  addCard(data) {
+    this.createCard(data);
+    this.renderCard(elements, false); 
+  };
+}
