@@ -1,6 +1,6 @@
 import {api} from './api.js';
-import {elemImgPopupCaption, elemImgPopup, imgPopup, elements} from './variables.js';
-import { openPopup } from './modal.js';
+import {elemImgPopupCaption, elemImgPopup, elements, popupImg} from './variables.js';
+// import { openPopup } from './modal.js';
 
 export class Card {
   constructor(data, myId, cardTemplate) {
@@ -61,7 +61,7 @@ export class Card {
   };
 
   // Обработчик кнопки удаления карточки
-  _delCardBtnHandler() {      
+  _delCardBtnHandler() {
     api.removeCard(this._id)
       .then(() => {
         this._tempCard.remove();
@@ -94,8 +94,9 @@ export class Card {
       elemImgPopupCaption.textContent = this._name;
       elemImgPopup.src = this._link;
       elemImgPopup.alt = this._name;
-      openPopup(imgPopup);
+      popupImg.open();
     });
+    popupImg.setEventListeners()
 
     // Сравнить ID пользователя с ID создателя карточки для отображения иконки удаления
     if (this._myId !== this._ownerId) {
@@ -108,6 +109,6 @@ export class Card {
   // Добавление карточки на страницу
   addCard(data) {
     this.createCard(data);
-    this.renderCard(elements, false); 
+    this.renderCard(elements, false);
   };
 }
