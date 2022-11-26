@@ -1,125 +1,90 @@
 import {cfg} from './variables.js';
+export class Api {
+  constructor(options) {
+    this._baseUrl = options.url;
+    this._headers = options.headers
+  }
 
-// Получить информацию о пользователе
-function getProfileInfo() {
-  return fetch(`${cfg.url}users/me`, {
-    headers: cfg.headers
-  })
-  .then(res => {
+  _handleResponse(res) {
     if (res.ok) {
       return res.json()
     }
     return Promise.reject(`Ошибка: ${res.status}`)
-  })
-};
+  }
 
-// Изменить информацию о пользователе
-function postProfileInfo(newPost) {
-  return fetch(`${cfg.url}users/me`, {
-    method: 'PATCH',
-    headers: cfg.headers,
-    body: JSON.stringify({
-      name: newPost.name,
-      about: newPost.about,
-      avatar: newPost.avatar,
-    }),
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-};
+  getProfileInfo() {
+    return fetch(`${this._baseUrl}users/me`, {
+      headers: this._headers
+    })
+    .then(this._handleResponse)
+  }
 
-// Изменить аватар
-function postAvatarLink(newPost) {
-  return fetch(`${cfg.url}users/me/avatar`, {
-    method: 'PATCH',
-    headers: cfg.headers,
-    body: JSON.stringify({
-      avatar: newPost.avatar,
-    }),
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-};
+  postProfileInfo(newPost) {
+    return fetch(`${this._baseUrl}users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: newPost.name,
+        about: newPost.about,
+        avatar: newPost.avatar,
+      }),
+    })
+    .then(this._handleResponse)
+  }
 
-// Получить карточки с сервера
-function getInitialCards() {
-  return fetch(`${cfg.url}cards`, {
-    headers: cfg.headers,
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-};
+  postAvatarLink(newPost) {
+    return fetch(`${this._baseUrl}users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: newPost.avatar,
+      }),
+    })
+    .then(this._handleResponse)
+  }
 
-// Отправка новой карточки на сервер
-function postCard(titleValue, linkValue) {
-  return fetch(`${cfg.url}cards`, {
-    method: 'POST',
-    headers: cfg.headers,
-    body: JSON.stringify({
-      name: titleValue,
-      link: linkValue,
-    }),
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-};
+  getInitialCards() {
+    return fetch(`${this._baseUrl}cards`, {
+      headers: this._headers,
+    })
+    .then(this._handleResponse)
+  }
 
-// Удаление карточки
-function removeCard(cardId) {
-  return fetch(`${cfg.url}cards/${cardId}`, {
-    method: 'DELETE',
-    headers: cfg.headers,
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-};
+  postCard(titleValue, linkValue) {
+    return fetch(`${this._baseUrl}cards`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: titleValue,
+        link: linkValue,
+      }),
+    })
+    .then(this._handleResponse)
+  }
 
-// Поставить лайк
-function putLike(cardId) {
-  return fetch(`${cfg.url}cards/likes/${cardId}`, {
-    method: 'PUT',
-    headers: cfg.headers,
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-};
+  removeCard(cardId) {
+    return fetch(`${this._baseUrl}cards/${cardId}`, {
+      method: 'DELETE',
+      headers: this._headers,
+    })
+    .then(this._handleResponse)
+  }
 
-// Убрать лайк
-function putAwayLike(cardId) {
-  return fetch(`${cfg.url}cards/likes/${cardId}`, {
-    method: 'DELETE',
-    headers: cfg.headers,
-  })
-  .then(res => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`)
-  })
-};
+  putLike(cardId) {
+    return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
+      method: 'PUT',
+      headers: this._headers,
+    })
+    .then(this._handleResponse)
+  }
 
-export {getProfileInfo, postProfileInfo, postAvatarLink, getInitialCards, postCard, removeCard, putLike, putAwayLike}
+  putAwayLike(cardId) {
+    return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
+      method: 'DELETE',
+      headers: this._headers,
+    })
+    .then(this._handleResponse)
+  }
+}
+
+export const api = new Api(cfg);

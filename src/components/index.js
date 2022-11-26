@@ -1,49 +1,31 @@
 import '../pages/index.css';
 import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
-import {createCard, addCard, checkLike, isLiked, checkAndAddLikeIcon, setLike} from './card.js';
-import enableValidation from './validate.js';
-import {getInitialCards, getProfileInfo, postProfileInfo, postCard, postAvatarLink, putLike, putAwayLike, removeCard} from './api.js';
-import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements} from './variables.js';
+import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements, cfg, cardTemplate} from './variables.js';
+import {api} from './api.js';
+import {Card} from './card.js';
+import {FormValidator} from './formValidator.js';
 
 // Получение информации о пользователе и карточках
-Promise.all([getProfileInfo(), getInitialCards()])
+Promise.all([api.getProfileInfo(), api.getInitialCards()])
   .then(data => {
     profileName.textContent = data[0].name;
     profileDescription.textContent = data[0].about;
     profileAvatar.src = data[0].avatar;
     data[1].forEach(function(item) {
-      elements.append(createCard(item.name, item.link, item._id, data[0]._id, likesHandler, delCardBtnHandler, item.likes.length, item.owner._id));
+      const card = new Card(item, data[0]._id, cardTemplate);
+      card.createCard();
+      card.renderCard(elements, true);
     });
   })
   .catch(err => console.log(err))
-
-
-// Обработчик кнопки лайка
-function likesHandler(userId, cardId, likesCounter, evt) {
-  (isLiked(evt) ? putAwayLike(cardId) : putLike(cardId))
-    .then(data => {
-      setLike(likesCounter, data.likes.length);
-      checkAndAddLikeIcon(evt, checkLike(data.likes, userId))
-    })
-    .catch(err => console.log(err))
-};
-
-// Обработчик кнопки удаления карточки
-function delCardBtnHandler(element, cardId) {
-  removeCard(cardId)
-    .then(() => {
-      element.remove();
-    })
-    .catch(err => console.log(err))
-};
 
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   editProfileBtn.textContent = 'Сохранение...'
-  postProfileInfo({
-    name: profileName.textContent,
-    about: profileDescription.textContent
+  api.postProfileInfo({
+    name: inputName.value,
+    about: inputDescription.value
   })
     .then(() => {
       profileName.textContent = inputName.value;
@@ -60,9 +42,10 @@ function handleProfileFormSubmit(evt) {
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
   createBtn.textContent = 'Сохранение...';
-  postCard(title.value, link.value)
+  api.postCard(title.value, link.value)
     .then((data) => {
-      addCard(data._id, data.owner._id, likesHandler, delCardBtnHandler);
+      const card = new Card(data, data.owner._id, cardTemplate);
+      card.addCard(data);
       evt.target.reset();
       createBtn.disabled = true;
       createBtn.classList.add('form__btn_inactive');
@@ -78,8 +61,8 @@ function handleAddFormSubmit(evt) {
 function handleFormEditAvatarSubmit(evt) {
   evt.preventDefault();
   editAvatarBtn.textContent = 'Сохранение...';
-  postAvatarLink({
-    avatar: profileAvatar.src,
+  api.postAvatarLink({
+    avatar: inputProfileAvatar.value,
   })
     .then(() => {
       profileAvatar.src = inputProfileAvatar.value;
@@ -115,12 +98,22 @@ formAdd.addEventListener('submit', handleAddFormSubmit);
 
 closePopupClickingOutside();
 
+
 // Включить валидацию
-enableValidation({
+const settings = {
   formSelector: '.form',
   inputSelector: '.form__input',
   btnSelector: '.form__btn',
   btnInactive: 'form__btn_inactive',
   formInputError: 'form__input_type_error',
   formErrorMessage: 'form__error-message_activate',
-});
+};
+
+const formUserInfo = new FormValidator(settings, '.form__edit');
+formUserInfo.enableValidation();
+
+const formUserAvatar = new FormValidator(settings, '.form__edit-avatar');
+formUserAvatar.enableValidation();
+
+const formAddCard = new FormValidator(settings, '.form__add');
+formAddCard.enableValidation();
