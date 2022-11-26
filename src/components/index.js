@@ -1,9 +1,9 @@
 import '../pages/index.css';
 import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
-import enableValidation from './validate.js';
 import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements, cfg, cardTemplate} from './variables.js';
 import {api} from './api.js';
 import {Card} from './card.js';
+import {FormValidator} from './formValidator.js';
 
 // Получение информации о пользователе и карточках
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
@@ -98,12 +98,22 @@ formAdd.addEventListener('submit', handleAddFormSubmit);
 
 closePopupClickingOutside();
 
+
 // Включить валидацию
-enableValidation({
+const settings = {
   formSelector: '.form',
   inputSelector: '.form__input',
   btnSelector: '.form__btn',
   btnInactive: 'form__btn_inactive',
   formInputError: 'form__input_type_error',
   formErrorMessage: 'form__error-message_activate',
-});
+};
+
+const formUserInfo = new FormValidator(settings, '.form__edit');
+formUserInfo.enableValidation();
+
+const formUserAvatar = new FormValidator(settings, '.form__edit-avatar');
+formUserAvatar.enableValidation();
+
+const formAddCard = new FormValidator(settings, '.form__add');
+formAddCard.enableValidation();
