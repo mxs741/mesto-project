@@ -1,9 +1,12 @@
 import '../pages/index.css';
-import {openPopup, closePopup, closePopupClickingOutside} from './modal.js';
-import {addForm, profileName, profileDescription, editFormPopup, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatarPopup, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements, cfg, cardTemplate} from './variables.js';
+import {profileName, profileDescription, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements, cardTemplate, popupAvatarForm, popupEditForm, popupAddForm} from './variables.js';
 import {api} from './api.js';
 import {Card} from './card.js';
 import {FormValidator} from './formValidator.js';
+
+popupAvatarForm.setEventListeners();
+popupEditForm.setEventListeners();
+popupAddForm.setEventListeners();
 
 // Получение информации о пользователе и карточках
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
@@ -22,7 +25,7 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  editProfileBtn.textContent = 'Сохранение...'
+  editProfileBtn.textContent = 'Сохранение...';
   api.postProfileInfo({
     name: inputName.value,
     about: inputDescription.value
@@ -30,7 +33,7 @@ function handleProfileFormSubmit(evt) {
     .then(() => {
       profileName.textContent = inputName.value;
       profileDescription.textContent = inputDescription.value;
-      closePopup(editFormPopup);
+      popupEditForm.close();
     })
     .catch(err => console.log(err))
     .finally(() => {
@@ -49,7 +52,7 @@ function handleAddFormSubmit(evt) {
       evt.target.reset();
       createBtn.disabled = true;
       createBtn.classList.add('form__btn_inactive');
-      closePopup(addForm);
+      popupAddForm.close();
     })
     .catch(err => console.log(err))
     .finally(() => {
@@ -66,7 +69,7 @@ function handleFormEditAvatarSubmit(evt) {
   })
     .then(() => {
       profileAvatar.src = inputProfileAvatar.value;
-      closePopup(editAvatarPopup);
+      popupAvatarForm.close();
     })
     .catch(err => console.log(err))
     .finally(() => {
@@ -76,7 +79,7 @@ function handleFormEditAvatarSubmit(evt) {
 
 // Открытие формы редактирования профиля
 editBtn.addEventListener('click', function() {
-  openPopup(editFormPopup);
+  popupEditForm.open();
   inputName.value = profileName.textContent;
   inputDescription.value = profileDescription.textContent;
 });
@@ -85,18 +88,16 @@ editBtn.addEventListener('click', function() {
 formEdit.addEventListener('submit', handleProfileFormSubmit);
 
 // Открытие формы установки аватара
-editAvatar.addEventListener('click', () => openPopup(editAvatarPopup));
+editAvatar.addEventListener('click', () => popupAvatarForm.open());
 
 // Отправка формы установки аватара
 formEditAvatar.addEventListener('submit', handleFormEditAvatarSubmit);
 
 // Открытие формы добавления карточки
-addBtn.addEventListener('click', () => openPopup(addForm));
+addBtn.addEventListener('click', () => popupAddForm.open());
 
 // Отправка формы добавления карточки
 formAdd.addEventListener('submit', handleAddFormSubmit);
-
-closePopupClickingOutside();
 
 
 // Включить валидацию

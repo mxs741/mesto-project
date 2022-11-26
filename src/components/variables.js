@@ -1,4 +1,5 @@
-export const addForm = document.querySelector('.popup_add');
+import {Popup} from './popup.js';
+export const addFormPopup = document.querySelector('.popup_add');
 export const profileName = document.querySelector('.profile__name');
 export const profileDescription = document.querySelector('.profile__description');
 export const editFormPopup = document.querySelector('.popup_edit');
@@ -23,7 +24,6 @@ export const cfg = {
     'content-type': 'application/json',
   }
 };
-export const closeButtons = document.querySelectorAll('.btn_type_close');
 export const title = document.querySelector('.form__input_type_name');
 export const link = document.querySelector('.form__input_type_link');
 export const elements = document.querySelector('.elements');
@@ -31,3 +31,7 @@ export const cardTemplate = document.querySelector('#element-template').content;
 export const imgPopup = document.querySelector('.popup_element');
 export const elemImgPopup = imgPopup.querySelector('.element__img_size_full');
 export const elemImgPopupCaption = imgPopup.querySelector('.element__img-caption');
+export const popupAvatarForm = new Popup(editAvatarPopup);
+export const popupEditForm = new Popup(editFormPopup);
+export const popupAddForm = new Popup(addFormPopup);
+export const popupImg = new Popup(imgPopup);
