@@ -1,6 +1,5 @@
 import {api} from './api.js';
-import {elemImgPopupCaption, elemImgPopup, elements, popupImg} from './variables.js';
-// import { openPopup } from './modal.js';
+import {elements, popupImg} from './variables.js';
 
 export class Card {
   constructor(data, myId, cardTemplate) {
@@ -91,10 +90,7 @@ export class Card {
 
     // Открытие попапа
     this._tempElemImg.addEventListener('click', () => {
-      elemImgPopupCaption.textContent = this._name;
-      elemImgPopup.src = this._link;
-      elemImgPopup.alt = this._name;
-      popupImg.open();
+      popupImg.open(this._name, this._link);
     });
     popupImg.setEventListeners()
 
