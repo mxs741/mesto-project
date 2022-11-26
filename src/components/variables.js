@@ -1,4 +1,5 @@
 import {Popup} from './popup.js';
+import {PopupWithImage} from './popupWithImage.js';
 export const addFormPopup = document.querySelector('.popup_add');
 export const profileName = document.querySelector('.profile__name');
 export const profileDescription = document.querySelector('.profile__description');
@@ -34,4 +35,4 @@ export const elemImgPopupCaption = imgPopup.querySelector('.element__img-caption
 export const popupAvatarForm = new Popup(editAvatarPopup);
 export const popupEditForm = new Popup(editFormPopup);
 export const popupAddForm = new Popup(addFormPopup);
-export const popupImg = new Popup(imgPopup);
+export const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup);
