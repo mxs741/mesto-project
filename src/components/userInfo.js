@@ -18,7 +18,7 @@ export class UserInfo {
 
   setUserInfo (inputName, inputDescription) {
     this._inputName = inputName;
-    this._inputDescription = inputDescription; 
+    this._inputDescription = inputDescription;
     api.postProfileInfo({
       name: this._inputName,
       about: this._inputDescription
