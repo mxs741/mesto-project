@@ -2,17 +2,17 @@ import {api} from './api.js';
 import {profileName, profileDescription, inputName, popupEditForm, editProfileBtn} from './variables.js';
 
 export class UserInfo {
-  constructor (name, about, avatar) {
-    this._name;
-    this._about;
-    this._avatar;
+  constructor () {
+    this.name;
+    this.about;
+    this.avatar;
   }
 
   getUserInfo (data) {
-    this._name = data.name;
-    this._about = data.about;
-    this._avatar = data.avatar;
-    this._userId = data._id;
+    this.name = data.name;
+    this.about = data.about;
+    this.avatar = data.avatar;
+    this.userId = data._id;
     return this;
   }
 

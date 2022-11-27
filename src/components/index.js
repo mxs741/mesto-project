@@ -17,9 +17,9 @@ const user = new UserInfo();
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
   .then(data => {
     user.getUserInfo(data[0]);
-    profileName.textContent = user._name;
-    profileDescription.textContent = user._about;
-    profileAvatar.src = user._avatar;
+    profileName.textContent = user.name;
+    profileDescription.textContent = user.about;
+    profileAvatar.src = user.avatar;
     const items = data[1];    
     items.reverse().forEach((item) => {
       const card = new Card(item, data[0]._id, cardTemplate);
@@ -79,8 +79,8 @@ function handleFormEditAvatarSubmit(evt) {
 // Открытие формы редактирования профиля
 editBtn.addEventListener('click', function() {
   popupEditForm.open();
-  inputName.value = user._name;
-  inputDescription.value = user._about;
+  inputName.value = user.name;
+  inputDescription.value = user.about;
 });
 
 // Отправка формы редактирования профиля
