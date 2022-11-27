@@ -1,8 +1,10 @@
 import '../pages/index.css';
-import {profileName, profileDescription, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd, formEditAvatar, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, title, link, elements, cardTemplate, popupAvatarForm, popupEditForm, popupAddForm} from './variables.js';
+import {profileName, profileDescription, inputName, inputDescription, editBtn, addBtn, formEdit, formAdd,
+   formEditAvatar, editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn, 
+   title, link, elements, cardTemplate, popupAvatarForm, popupEditForm, popupAddForm, formUserInfo, formUserAvatar, formAddCard} from './variables.js';
 import {api} from './api.js';
 import {Card} from './card.js';
-import {FormValidator} from './formValidator.js';
+import {Section} from './section.js';
 
 popupAvatarForm.setEventListeners();
 popupEditForm.setEventListeners();
@@ -14,10 +16,12 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
     profileName.textContent = data[0].name;
     profileDescription.textContent = data[0].about;
     profileAvatar.src = data[0].avatar;
-    data[1].forEach(function(item) {
+    const items = data[1];    
+    items.reverse().forEach((item) => {
       const card = new Card(item, data[0]._id, cardTemplate);
-      card.createCard();
-      card.renderCard(elements, true);
+      const renderer = card.createCard();
+      const places = new Section({card, renderer}, '.elements');
+      places.addItem(renderer);
     });
   })
   .catch(err => console.log(err))
@@ -47,8 +51,11 @@ function handleAddFormSubmit(evt) {
   createBtn.textContent = 'Сохранение...';
   api.postCard(title.value, link.value)
     .then((data) => {
-      const card = new Card(data, data.owner._id, cardTemplate);
-      card.addCard(data);
+      const card = new Card(data, data.owner._id, cardTemplate);      
+      const renderer = card.createCard();
+      const places = new Section({card, renderer}, '.elements');
+      
+      places.addItem(renderer);
       evt.target.reset();
       createBtn.disabled = true;
       createBtn.classList.add('form__btn_inactive');
@@ -99,22 +106,6 @@ addBtn.addEventListener('click', () => popupAddForm.open());
 // Отправка формы добавления карточки
 formAdd.addEventListener('submit', handleAddFormSubmit);
 
-
-// Включить валидацию
-const settings = {
-  formSelector: '.form',
-  inputSelector: '.form__input',
-  btnSelector: '.form__btn',
-  btnInactive: 'form__btn_inactive',
-  formInputError: 'form__input_type_error',
-  formErrorMessage: 'form__error-message_activate',
-};
-
-const formUserInfo = new FormValidator(settings, '.form__edit');
-formUserInfo.enableValidation();
-
-const formUserAvatar = new FormValidator(settings, '.form__edit-avatar');
 formUserAvatar.enableValidation();
-
-const formAddCard = new FormValidator(settings, '.form__add');
+formUserInfo.enableValidation();
 formAddCard.enableValidation();

@@ -1,5 +1,7 @@
 import {Popup} from './popup.js';
 import {PopupWithImage} from './popupWithImage.js';
+import {FormValidator} from './formValidator.js';
+
 export const addFormPopup = document.querySelector('.popup_add');
 export const profileName = document.querySelector('.profile__name');
 export const profileDescription = document.querySelector('.profile__description');
@@ -36,3 +38,18 @@ export const popupAvatarForm = new Popup(editAvatarPopup);
 export const popupEditForm = new Popup(editFormPopup);
 export const popupAddForm = new Popup(addFormPopup);
 export const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup);
+
+// настройки валидации
+export const settings = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  btnSelector: '.form__btn',
+  btnInactive: 'form__btn_inactive',
+  formInputError: 'form__input_type_error',
+  formErrorMessage: 'form__error-message_activate',
+};
+
+export const formUserInfo = new FormValidator(settings, '.form__edit');
+export const formUserAvatar = new FormValidator(settings, '.form__edit-avatar');
+export const formAddCard = new FormValidator(settings, '.form__add');
+
