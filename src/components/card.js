@@ -17,13 +17,12 @@ export class Card {
     this._tempLikeBtn = this._tempCard.querySelector('.btn_type_like');
     this._tempDeleteBtn = this._tempCard.querySelector('.btn_type_remove-card');
     this._tempLikes = this._tempCard.querySelector('.element__number-of-likes');
-   // this._cardElem = this._tempDeleteBtn.closest('.element'); // если я правильно поняла, это тот эл-т что вставляем на стр -> переименовала с tempCardElem
   }
 
-  // отрисовка карточки на странице
-  renderCard(container, inAfter) {
-    inAfter ? container.append(this._tempCard) : container.prepend(this._tempCard);
-  }
+  // // отрисовка карточки на странице
+  // renderCard(container, inAfter) {
+  //   inAfter ? container.append(this._tempCard) : container.prepend(this._tempCard);
+  // }
 
   // Проверить наличие класса active у кнопки
   _isLiked() {
@@ -69,7 +68,7 @@ export class Card {
       .catch(err => console.log(err))
 };
 
-  createCard(data) {
+  createCard() {
     this._tempElemTitle.textContent = this._name;
     this._tempElemImg.src = this._link;
     this._tempElemImg.alt = this._name;
@@ -105,9 +104,16 @@ export class Card {
     return this._tempCard;
   }
 
+<<<<<<< Updated upstream
   // Добавление карточки на страницу
   addCard(data) {
     this.createCard(data);
     this.renderCard(elements, false); 
   };
+=======
+  // // Добавление карточки на страницу
+  // addCard(data) {
+  //   this.createCard(data);
+  // };
+>>>>>>> Stashed changes
 }

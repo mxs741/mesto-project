@@ -1,4 +1,12 @@
+<<<<<<< Updated upstream
 export const addForm = document.querySelector('.popup_add');
+=======
+import {Popup} from './popup.js';
+import {PopupWithImage} from './popupWithImage.js';
+import {FormValidator} from './formValidator.js';
+
+export const addFormPopup = document.querySelector('.popup_add');
+>>>>>>> Stashed changes
 export const profileName = document.querySelector('.profile__name');
 export const profileDescription = document.querySelector('.profile__description');
 export const editFormPopup = document.querySelector('.popup_edit');
@@ -30,4 +38,26 @@ export const elements = document.querySelector('.elements');
 export const cardTemplate = document.querySelector('#element-template').content;
 export const imgPopup = document.querySelector('.popup_element');
 export const elemImgPopup = imgPopup.querySelector('.element__img_size_full');
+<<<<<<< Updated upstream
 export const elemImgPopupCaption = imgPopup.querySelector('.element__img-caption');
+=======
+export const elemImgPopupCaption = imgPopup.querySelector('.element__img-caption');
+export const popupAvatarForm = new Popup(editAvatarPopup);
+export const popupEditForm = new Popup(editFormPopup);
+export const popupAddForm = new Popup(addFormPopup);
+export const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup);
+
+// настройки валидации
+export const settings = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  btnSelector: '.form__btn',
+  btnInactive: 'form__btn_inactive',
+  formInputError: 'form__input_type_error',
+  formErrorMessage: 'form__error-message_activate',
+};
+
+export const formUserInfo = new FormValidator(settings, '.form__edit');
+export const formUserAvatar = new FormValidator(settings, '.form__edit-avatar');
+export const formAddCard = new FormValidator(settings, '.form__add');
+>>>>>>> Stashed changes
