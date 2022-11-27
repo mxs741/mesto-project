@@ -5,17 +5,21 @@ import {profileName, profileDescription, inputName, inputDescription, editBtn, a
 import {api} from './api.js';
 import {Card} from './card.js';
 import {Section} from './section.js';
+import {UserInfo} from './userInfo.js';
 
 popupAvatarForm.setEventListeners();
 popupEditForm.setEventListeners();
 popupAddForm.setEventListeners();
 
+const user = new UserInfo();
+
 // Получение информации о пользователе и карточках
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
   .then(data => {
-    profileName.textContent = data[0].name;
-    profileDescription.textContent = data[0].about;
-    profileAvatar.src = data[0].avatar;
+    user.getUserInfo(data[0]);
+    profileName.textContent = user._name;
+    profileDescription.textContent = user._about;
+    profileAvatar.src = user._avatar;
     const items = data[1];    
     items.reverse().forEach((item) => {
       const card = new Card(item, data[0]._id, cardTemplate);
@@ -30,19 +34,7 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   editProfileBtn.textContent = 'Сохранение...';
-  api.postProfileInfo({
-    name: inputName.value,
-    about: inputDescription.value
-  })
-    .then(() => {
-      profileName.textContent = inputName.value;
-      profileDescription.textContent = inputDescription.value;
-      popupEditForm.close();
-    })
-    .catch(err => console.log(err))
-    .finally(() => {
-      editProfileBtn.textContent = 'Сохранить';
-    })
+  user.setUserInfo(inputName.value, inputDescription.value);
 };
 
 // Форма добавления карточки
@@ -87,8 +79,8 @@ function handleFormEditAvatarSubmit(evt) {
 // Открытие формы редактирования профиля
 editBtn.addEventListener('click', function() {
   popupEditForm.open();
-  inputName.value = profileName.textContent;
-  inputDescription.value = profileDescription.textContent;
+  inputName.value = user._name;
+  inputDescription.value = user._about;
 });
 
 // Отправка формы редактирования профиля
