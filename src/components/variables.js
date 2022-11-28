@@ -1,4 +1,4 @@
-import {Popup} from './popup.js';
+import {PopupWithForm} from './popupWithForm.js';
 import {PopupWithImage} from './popupWithImage.js';
 import {FormValidator} from './formValidator.js';
 
@@ -34,9 +34,9 @@ export const cardTemplate = document.querySelector('#element-template').content;
 export const imgPopup = document.querySelector('.popup_element');
 export const elemImgPopup = imgPopup.querySelector('.element__img_size_full');
 export const elemImgPopupCaption = imgPopup.querySelector('.element__img-caption');
-export const popupAvatarForm = new Popup(editAvatarPopup);
-export const popupEditForm = new Popup(editFormPopup);
-export const popupAddForm = new Popup(addFormPopup);
+export const popupAvatarForm = new PopupWithForm(editAvatarPopup);
+export const popupEditForm = new PopupWithForm(editFormPopup);
+export const popupAddForm = new PopupWithForm(addFormPopup);
 export const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup);
 
 // настройки валидации
