@@ -1,5 +1,5 @@
 import {api} from './api.js';
-import {profileName, profileDescription, inputName, popupEditForm, editProfileBtn} from './variables.js';
+import {profileName, profileDescription, popupEditForm, editProfileBtn} from './variables.js';
 
 export class UserInfo {
   constructor () {
@@ -18,7 +18,7 @@ export class UserInfo {
 
   setUserInfo (inputName, inputDescription) {
     this._inputName = inputName;
-    this._inputDescription = inputDescription; 
+    this._inputDescription = inputDescription;
     api.postProfileInfo({
       name: this._inputName,
       about: this._inputDescription

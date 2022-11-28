@@ -1,5 +1,5 @@
 import {api} from './api.js';
-import {elements, popupImg} from './variables.js';
+import {popupImg} from './variables.js';
 
 export class Card {
   constructor(data, myId, cardTemplate) {
