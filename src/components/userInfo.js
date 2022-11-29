@@ -1,5 +1,5 @@
-import {api} from './api.js';
-import {profileName, profileDescription, popupEditForm, editProfileBtn} from './variables.js';
+import {api} from './Api.js';
+import {profileName, profileDescription, popupEditForm, editProfileBtn} from '../utils/variables.js';
 
 export class UserInfo {
   constructor () {

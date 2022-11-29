@@ -1,6 +1,6 @@
-import {PopupWithForm} from './popupWithForm.js';
-import {PopupWithImage} from './popupWithImage.js';
-import {FormValidator} from './formValidator.js';
+import {PopupWithForm} from '../components/PopupWithForm.js';
+import {PopupWithImage} from '../components/PopupWithImage.js';
+import {FormValidator} from '../components/FormValidator.js';
 
 export const addFormPopup = document.querySelector('.popup_add');
 export const profileName = document.querySelector('.profile__name');

@@ -1,5 +1,5 @@
-import {api} from './api.js';
-import {popupImg} from './variables.js';
+import {api} from './Api.js';
+import {popupImg} from '../utils/variables.js';
 
 export class Card {
   constructor(data, myId, cardTemplate) {
@@ -74,6 +74,19 @@ export class Card {
       this._tempLikes.textContent = '0';
     }
 
+    this._setEventListeners();
+   
+    popupImg.setEventListeners();
+
+    // Сравнить ID пользователя с ID создателя карточки для отображения иконки удаления
+    if (this._myId !== this._ownerId) {
+      this._tempDeleteBtn.style.display = 'none';
+    };
+
+    return this._tempCard;
+  }
+
+  _setEventListeners() {
     this._tempLikeBtn.addEventListener('click', () => {
       this._likesHandler();
     });
@@ -86,13 +99,5 @@ export class Card {
     this._tempElemImg.addEventListener('click', () => {
       popupImg.open(this._name, this._link);
     });
-    popupImg.setEventListeners()
-
-    // Сравнить ID пользователя с ID создателя карточки для отображения иконки удаления
-    if (this._myId !== this._ownerId) {
-      this._tempDeleteBtn.style.display = 'none';
-    };
-
-    return this._tempCard;
-  }
+  };
 }

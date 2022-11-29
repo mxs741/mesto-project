@@ -1,11 +1,11 @@
-import '../pages/index.css';
+import './index.css';
 import {profileName, profileDescription, inputName, inputDescription, editBtn, addBtn,
    editAvatar, profileAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn,
-   title, link, cardTemplate, popupAvatarForm, popupEditForm, popupAddForm, formUserInfo, formUserAvatar, formAddCard} from './variables.js';
-import {api} from './api.js';
-import {Card} from './card.js';
-import {Section} from './section.js';
-import {UserInfo} from './userInfo.js';
+   title, link, cardTemplate, popupAvatarForm, popupEditForm, popupAddForm, formUserInfo, formUserAvatar, formAddCard} from '../utils/variables.js';
+import {api} from '../components/Api.js';
+import {Card} from '../components/Сard.js';
+import {Section} from '../components/Section.js';
+import {UserInfo} from '../components/UserInfo.js';
 
 // Отправка формы установки аватара
 popupAvatarForm.setEventListeners(handleFormEditAvatarSubmit);
