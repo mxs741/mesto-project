@@ -1,11 +1,9 @@
-import {api} from './Api.js';
-import {profileName, profileDescription, popupEditForm, editProfileBtn} from '../utils/variables.js';
-
 export class UserInfo {
-  constructor () {
+  constructor (postProfileInfo) {
     this.name;
     this.about;
     this.avatar;
+    this._postProfileInfo = postProfileInfo;
   }
 
   getUserInfo (data) {
@@ -16,21 +14,7 @@ export class UserInfo {
     return this;
   }
 
-  setUserInfo (inputName, inputDescription) {
-    this._inputName = inputName;
-    this._inputDescription = inputDescription;
-    api.postProfileInfo({
-      name: this._inputName,
-      about: this._inputDescription
-    })
-      .then(() => {
-        profileName.textContent = this._inputName;
-        profileDescription.textContent = this._inputDescription;
-        popupEditForm.close();
-      })
-      .catch(err => console.log(err))
-      .finally(() => {
-        editProfileBtn.textContent = 'Сохранить';
-      })
+  setUserInfo () {
+    this._postProfileInfo()
   }
 }

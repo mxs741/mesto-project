@@ -1,4 +1,3 @@
-import {cfg} from '../utils/variables.js';
 export class Api {
   constructor(options) {
     this._baseUrl = options.url;
@@ -81,5 +80,3 @@ export class Api {
     })
   }
 }
-
-export const api = new Api(cfg);

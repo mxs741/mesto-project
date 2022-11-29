@@ -1,8 +1,5 @@
-import {api} from './Api.js';
-import {popupImg} from '../utils/variables.js';
-
 export class Card {
-  constructor(data, myId, cardTemplate) {
+  constructor(data, myId, cardTemplate, popupImgOpenHandler, removeCard, putLike, putAwayLike) {
     this._id = data._id;
     this._name = data.name;
     this._link = data.link;
@@ -10,6 +7,10 @@ export class Card {
     this._likesLength = data.likes.length;
     this._ownerId = data.owner._id;
     this._myId = myId;
+    this._putLike = putLike;
+    this._putAwayLike = putAwayLike;
+    this._removeCard = removeCard;
+    this._popupImgOpenHandler = popupImgOpenHandler;
     this._tempCard = cardTemplate.querySelector('.element').cloneNode(true);
     this._tempElemTitle = this._tempCard.querySelector('.element__title');
     this._tempElemImg = this._tempCard.querySelector('.element__img');
@@ -45,7 +46,7 @@ export class Card {
 
   // Обработчик кнопки лайка
   _likesHandler() {
-    (this._isLiked() ? api.putAwayLike(this._id) : api.putLike(this._id))
+    (this._isLiked() ? this._putAwayLike(this._id) : this._putLike(this._id))
     .then(data => {
       this._setLike(data);
       this._tempLikeBtn.classList.toggle('btn_type_like-active');
@@ -55,7 +56,7 @@ export class Card {
 
   // Обработчик кнопки удаления карточки
   _delCardBtnHandler() {
-    api.removeCard(this._id)
+    this._removeCard(this._id)
       .then(() => {
         this._tempCard.remove();
       })
@@ -75,8 +76,6 @@ export class Card {
     }
 
     this._setEventListeners();
-   
-    popupImg.setEventListeners();
 
     // Сравнить ID пользователя с ID создателя карточки для отображения иконки удаления
     if (this._myId !== this._ownerId) {
@@ -97,7 +96,7 @@ export class Card {
 
     // Открытие попапа
     this._tempElemImg.addEventListener('click', () => {
-      popupImg.open(this._name, this._link);
+      this._popupImgOpenHandler(this._name, this._link);
     });
   };
 }

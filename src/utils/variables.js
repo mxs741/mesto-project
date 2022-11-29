@@ -1,7 +1,3 @@
-import {PopupWithForm} from '../components/PopupWithForm.js';
-import {PopupWithImage} from '../components/PopupWithImage.js';
-import {FormValidator} from '../components/FormValidator.js';
-
 export const addFormPopup = document.querySelector('.popup_add');
 export const profileName = document.querySelector('.profile__name');
 export const profileDescription = document.querySelector('.profile__description');
@@ -34,11 +30,6 @@ export const cardTemplate = document.querySelector('#element-template').content;
 export const imgPopup = document.querySelector('.popup_element');
 export const elemImgPopup = imgPopup.querySelector('.element__img_size_full');
 export const elemImgPopupCaption = imgPopup.querySelector('.element__img-caption');
-export const popupAvatarForm = new PopupWithForm(editAvatarPopup);
-export const popupEditForm = new PopupWithForm(editFormPopup);
-export const popupAddForm = new PopupWithForm(addFormPopup);
-export const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup);
-
 // настройки валидации
 export const settings = {
   formSelector: '.form',
@@ -48,8 +39,3 @@ export const settings = {
   formInputError: 'form__input_type_error',
   formErrorMessage: 'form__error-message_activate',
 };
-
-export const formUserInfo = new FormValidator(settings, '.form__edit');
-export const formUserAvatar = new FormValidator(settings, '.form__edit-avatar');
-export const formAddCard = new FormValidator(settings, '.form__add');
-
