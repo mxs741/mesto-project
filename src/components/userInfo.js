@@ -1,20 +1,21 @@
 export class UserInfo {
-  constructor (postProfileInfo) {
-    this.name;
-    this.about;
-    this.avatar;
-    this._postProfileInfo = postProfileInfo;
+  constructor (nameSelector, aboutSelector, avatarSelector) {
+    this.nameSelector = document.querySelector(nameSelector);
+    this.aboutSelector = document.querySelector(aboutSelector);
+    this.avatarSelector = document.querySelector(avatarSelector);
   }
 
-  getUserInfo (data) {
-    this.name = data.name;
-    this.about = data.about;
-    this.avatar = data.avatar;
-    this.userId = data._id;
+  getUserInfo () {
+    this.name = this.nameSelector.textContent;
+    this.about = this.aboutSelector.textContent;
+    this.avatar = this.avatarSelector.src;
     return this;
   }
 
-  setUserInfo () {
-    this._postProfileInfo()
+  setUserInfo ({name, about, avatar, _id}) {
+    if (name) this.nameSelector.textContent = name;
+    if (about) this.aboutSelector.textContent = about;
+    if (avatar) this.avatarSelector.src = avatar;
+    if (_id) this.myId = _id;
   }
 }
