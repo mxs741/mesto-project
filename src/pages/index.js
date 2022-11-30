@@ -11,9 +11,9 @@ import {PopupWithImage} from '../components/PopupWithImage.js';
 import {FormValidator} from '../components/FormValidator.js';
 
 const api = new Api(cfg);
-const popupAvatarForm = new PopupWithForm(editAvatarPopup);
-const popupEditForm = new PopupWithForm(editFormPopup);
-const popupAddForm = new PopupWithForm(addFormPopup);
+const popupAvatarForm = new PopupWithForm(editAvatarPopup, handleFormEditAvatarSubmit);
+const popupEditForm = new PopupWithForm(editFormPopup, handleProfileFormSubmit);
+const popupAddForm = new PopupWithForm(addFormPopup, handleAddFormSubmit);
 const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup);
 const formUserInfo = new FormValidator(settings, formEdit);
 const formUserAvatar = new FormValidator(settings, formEditAvatar);
@@ -23,11 +23,11 @@ const user = new UserInfo('.profile__name', '.profile__description', '.profile__
 const places = new Section('.elements');
 
 // Отправка формы установки аватара
-popupAvatarForm.setEventListeners(handleFormEditAvatarSubmit);
+popupAvatarForm.setEventListeners();
 // Отправка формы редактирования профиля
-popupEditForm.setEventListeners(handleProfileFormSubmit);
+popupEditForm.setEventListeners();
 // Отправка формы добавления карточки
-popupAddForm.setEventListeners(handleAddFormSubmit);
+popupAddForm.setEventListeners();
 
 popupImg.setEventListeners();
 
@@ -53,7 +53,7 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  editProfileBtn.textContent = 'Сохранение...';
+  popupEditForm.renderLoading(true, 'Сохранение...');
   postProfileInfo();
 };
 
@@ -80,13 +80,11 @@ function postProfileInfo() {
   })
     .then(() => {
       user.setUserInfo({name: inputName.value, about: inputDescription.value});
-      // profileName.textContent = inputName.value;
-      // profileDescription.textContent = inputDescription.value;
       popupEditForm.close();
     })
     .catch(err => console.log(err))
     .finally(() => {
-      editProfileBtn.textContent = 'Сохранить';
+      popupEditForm.renderLoading(false);
     })
 }
 
@@ -119,7 +117,6 @@ function handleFormEditAvatarSubmit(evt) {
   })
     .then(() => {
       user.setUserInfo({avatar : inputProfileAvatar.value});
-      //profileAvatar.src = inputProfileAvatar.value;
       popupAvatarForm.close();
     })
     .catch(err => console.log(err))

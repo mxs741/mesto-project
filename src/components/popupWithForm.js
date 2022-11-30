@@ -1,15 +1,22 @@
 import {Popup} from "./Popup.js";
 
 export class PopupWithForm extends Popup {
-  constructor(popup) {
+  constructor(popup, submitCallback) {
     super(popup);
     this._form = this._popup.querySelector('form');
-    this._submitBtn = this._popup.querySelector('.form__btn');
+    this._submitBtn = this._popup.querySelector('.form__btn'); 
+    this._submitBtnText = this._submitBtn.TextContent;    
+    this._submitCallback = submitCallback; //здесь нужно использовать this._getInputValues() ?!
   }
 
+  //собрать данные всех полей формы
   _getInputValues() {
-    //собрать данные всех полей формы
-    this._inputValues = this._form.elements;
+    this._inputList = this._form.querySelectorAll('.form__input');
+    this._formValues = {};
+    this._inputList.forEach(input => {
+      this._formValues[input.name] = input.value;
+    });
+    return this._formValues;
   }
 
   close() {
@@ -19,9 +26,16 @@ export class PopupWithForm extends Popup {
     this._submitBtn.classList.add('form__btn_inactive');
   }
 
-  setEventListeners(submitCallback) {
-    this._submitCallback = submitCallback;
+  setEventListeners() {
     super.setEventListeners()
     this._popup.addEventListener('submit', this._submitCallback)
   }
+
+  renderLoading(isLoading, loadingText = 'Сохранение...') { 
+    if (isLoading) {
+      this._submitBtn.TextContent = loadingText; 
+    } else {
+      this._submitBtn.TextContent = this._submitBtnText; 
+    }
+  };
 }
