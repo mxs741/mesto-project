@@ -4,8 +4,7 @@ export class PopupWithForm extends Popup {
   constructor(popup, submitCallback) {
     super(popup);
     this._form = this._popup.querySelector('form');
-    this._submitBtn = this._popup.querySelector('.form__btn'); 
-    this._submitBtnText = this._submitBtn.TextContent;    
+    this._submitBtn = this._popup.querySelector('.form__btn');    
     this._submitCallback = submitCallback; //здесь нужно использовать this._getInputValues() ?!
   }
 
@@ -30,12 +29,5 @@ export class PopupWithForm extends Popup {
     super.setEventListeners()
     this._popup.addEventListener('submit', this._submitCallback)
   }
-
-  renderLoading(isLoading, loadingText = 'Сохранение...') { 
-    if (isLoading) {
-      this._submitBtn.TextContent = loadingText; 
-    } else {
-      this._submitBtn.TextContent = this._submitBtnText; 
-    }
-  };
+  
 }

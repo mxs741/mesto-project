@@ -53,7 +53,7 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  popupEditForm.renderLoading(true, 'Сохранение...');
+  editProfileBtn.textContent = 'Сохранение...';
   postProfileInfo();
 };
 
@@ -84,7 +84,7 @@ function postProfileInfo() {
     })
     .catch(err => console.log(err))
     .finally(() => {
-      popupEditForm.renderLoading(false);
+      editProfileBtn.textContent = 'Сохранить';
     })
 }
 
