@@ -41,6 +41,10 @@ formAddCard.enableValidation();
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
   .then(data => {
     user.setUserInfo(data[0]);
+    // небольшая заготовка кода после создания createCard и применения renderItems из Section
+    // const renderer = card.createCard();
+    // const places = new Section({items: data[1], renderer: renderer}, '.elements');
+    // places.renderItems(data[1])
     const items = data[1];
     items.reverse().forEach((item) => {
       const card = new Card(item, user.myId, cardTemplate, popupImgOpenHandler, delCard, putLike, putAwayLike);
@@ -50,11 +54,28 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
   })
   .catch(err => console.log(err))
 
+// Создать функцию, возвращающую карточку с её обработчиками
+// function createCard() {
+//   const card = new Card(...)
+//   return card
+// }
+
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   editProfileBtn.textContent = 'Сохранение...';
-  postProfileInfo();
+  api.postProfileInfo({
+    name: inputName.value,
+    about: inputDescription.value
+  })
+    .then(() => {
+      user.setUserInfo({name: inputName.value, about: inputDescription.value});
+      popupEditForm.close();
+    })
+    .catch(err => console.log(err))
+    .finally(() => {
+      editProfileBtn.textContent = 'Сохранить';
+    })
 };
 
 function popupImgOpenHandler(name, link) {
@@ -73,21 +94,6 @@ function delCard(id) {
   return api.removeCard(id)
 }
 
-function postProfileInfo() {
-  api.postProfileInfo({
-    name: inputName.value,
-    about: inputDescription.value
-  })
-    .then(() => {
-      user.setUserInfo({name: inputName.value, about: inputDescription.value});
-      popupEditForm.close();
-    })
-    .catch(err => console.log(err))
-    .finally(() => {
-      editProfileBtn.textContent = 'Сохранить';
-    })
-}
-
 // Форма добавления карточки
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
@@ -98,8 +104,6 @@ function handleAddFormSubmit(evt) {
       const renderer = card.createCard();
 
       places.addItem(renderer);
-      createBtn.disabled = true;
-      createBtn.classList.add('form__btn_inactive');
       popupAddForm.close();
     })
     .catch(err => console.log(err))
@@ -127,11 +131,11 @@ function handleFormEditAvatarSubmit(evt) {
 
 // Открытие формы редактирования профиля
 editBtn.addEventListener('click', function() {
-  formUserInfo.resetValidation(); 
+  formUserInfo.resetValidation();
   popupEditForm.open();
-  user.getUserInfo();
-  inputName.value = user.name;
-  inputDescription.value = user.about;
+  const {name, about} = user.getUserInfo();
+  inputName.value = name;
+  inputDescription.value = about;
 });
 
 // Открытие формы установки аватара

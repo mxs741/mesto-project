@@ -4,7 +4,7 @@ export class PopupWithForm extends Popup {
   constructor(popup, submitCallback) {
     super(popup);
     this._form = this._popup.querySelector('form');
-    this._submitBtn = this._popup.querySelector('.form__btn');    
+    this._submitBtn = this._popup.querySelector('.form__btn');
     this._submitCallback = submitCallback; //здесь нужно использовать this._getInputValues() ?!
   }
 
@@ -19,15 +19,12 @@ export class PopupWithForm extends Popup {
   }
 
   close() {
-    super.close()
-    this._form.reset()
-    this._submitBtn.disabled = true;
-    this._submitBtn.classList.add('form__btn_inactive');
+    super.close();
+    this._form.reset();
   }
 
   setEventListeners() {
-    super.setEventListeners()
-    this._popup.addEventListener('submit', this._submitCallback)
+    super.setEventListeners();
+    this._popup.addEventListener('submit', this._submitCallback);
   }
-  
 }
