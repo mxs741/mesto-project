@@ -1,17 +1,19 @@
 export class Section {
-  constructor (containerSelector) { //{items, renderer} - первый параметр
+  constructor ({items, renderer}, containerSelector) {
     this._container = document.querySelector(containerSelector);
-    //this._renderer = renderer;
+    this._renderer = renderer;
+    this._items = items;
   }
 
+  // Добавление карточки на страницу
   addItem (item) {
     this._container.prepend(item);
   }
 
-  // отрисовка массива карточек(в промисе)
-  // renderItems (items) {
-  //   items.forEach(element => {
-
-  //   });
-  // }
+  // Отрисовка массива карточек(в промисе)
+  renderItems () {
+    this._items.reverse().forEach(element => {
+      this._renderer(element)
+    });
+  }
 }

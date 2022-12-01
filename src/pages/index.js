@@ -18,9 +18,8 @@ const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup)
 const formUserInfo = new FormValidator(settings, formEdit);
 const formUserAvatar = new FormValidator(settings, formEditAvatar);
 const formAddCard = new FormValidator(settings, formAdd);
-
-const user = new UserInfo('.profile__name', '.profile__description', '.profile__avatar');
-const places = new Section('.elements');
+let userInfo
+let section
 
 // Отправка формы установки аватара
 popupAvatarForm.setEventListeners();
@@ -40,25 +39,48 @@ formAddCard.enableValidation();
 // Получение информации о пользователе и карточках
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
   .then(data => {
-    user.setUserInfo(data[0]);
-    // небольшая заготовка кода после создания createCard и применения renderItems из Section
-    // const renderer = card.createCard();
-    // const places = new Section({items: data[1], renderer: renderer}, '.elements');
-    // places.renderItems(data[1])
-    const items = data[1];
-    items.reverse().forEach((item) => {
-      const card = new Card(item, user.myId, cardTemplate, popupImgOpenHandler, delCard, putLike, putAwayLike);
-      const renderer = card.createCard();
-      places.addItem(renderer);
-    });
+    userInfo = new UserInfo('.profile__name', '.profile__description', '.profile__avatar')
+    userInfo.setUserInfo(data[0]);
+    section = new Section({
+      items: data[1],
+      renderer: (item) => {
+        const renderer = createCard(item)
+        section.addItem(renderer)
+      }
+    },
+    '.elements');
+    section.renderItems()
   })
   .catch(err => console.log(err))
 
 // Создать функцию, возвращающую карточку с её обработчиками
-// function createCard() {
-//   const card = new Card(...)
-//   return card
-// }
+function createCard(item) {
+  const card = new Card(
+    item,
+    userInfo.myId,
+    cardTemplate,
+    {
+      removeCardHandler: (cardId, element) => {
+        api.removeCard(cardId)
+          .then(() => {
+            element.remove();
+          })
+          .catch(err => console.log(err))
+      },
+      likesHandler: (isLiked, btn, cardId) => {
+        (isLiked ? api.putAwayLike(cardId) : api.putLike(cardId))
+          .then(data => {
+            card.setLike(data);
+            btn.classList.toggle('btn_type_like-active');
+          })
+          .catch(err => console.log(err))
+      },
+      popupImgOpenHandler: (name, link) => {
+        popupImg.open(name, link)
+      }
+    })
+  return card.createCard()
+}
 
 // Форма редактирования профиля
 function handleProfileFormSubmit(evt) {
@@ -78,32 +100,14 @@ function handleProfileFormSubmit(evt) {
     })
 };
 
-function popupImgOpenHandler(name, link) {
-  popupImg.open(name, link)
-}
-
-function putLike(id) {
-  return api.putLike(id)
-}
-
-function putAwayLike(id) {
-  return api.putAwayLike(id)
-}
-
-function delCard(id) {
-  return api.removeCard(id)
-}
-
 // Форма добавления карточки
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
   createBtn.textContent = 'Сохранение...';
   api.postCard(title.value, link.value)
     .then((data) => {
-      const card = new Card(data, data.owner._id, cardTemplate, popupImgOpenHandler, delCard, putLike, putAwayLike);
-      const renderer = card.createCard();
-
-      places.addItem(renderer);
+      const renderer = createCard(data);
+      section.addItem(renderer);
       popupAddForm.close();
     })
     .catch(err => console.log(err))
@@ -143,6 +147,7 @@ editAvatar.addEventListener('click', () => {
   formUserAvatar.resetValidation();
   popupAvatarForm.open();
 });
+
 // Открытие формы добавления карточки
 addBtn.addEventListener('click', () => {
   formAddCard.resetValidation();
