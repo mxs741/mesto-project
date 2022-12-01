@@ -87,14 +87,14 @@ function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   editProfileBtn.textContent = 'Сохранение...';
 
-  
+
   //const {name, about} = editFormPopup._getInputValues();
   api.postProfileInfo({
     name: inputName.value, //name и about
     about: inputDescription.value
   })
     .then((data) => {
-      user.setUserInfo({name: data.name, about: data.about});
+      userInfo.setUserInfo({name: data.name, about: data.about});
       popupEditForm.close();
     })
     .catch(err => console.log(err))
@@ -107,7 +107,7 @@ function handleProfileFormSubmit(evt) {
 function handleAddFormSubmit(evt) {
   evt.preventDefault();
   createBtn.textContent = 'Сохранение...';
-  
+
   //const {title, link} = addFormPopup._getInputValues();
   api.postCard(title.value, link.value) //title и link используем сверху
     .then((data) => {
@@ -131,7 +131,7 @@ function handleFormEditAvatarSubmit(evt) {
     avatar: inputProfileAvatar.value, //тут исп avatar
   })
     .then((data) => {
-      user.setUserInfo({avatar : data.avatar});
+      userInfo.setUserInfo({avatar : data.avatar});
       popupAvatarForm.close();
     })
     .catch(err => console.log(err))
@@ -144,7 +144,7 @@ function handleFormEditAvatarSubmit(evt) {
 editBtn.addEventListener('click', function() {
   formUserInfo.resetValidation();
   popupEditForm.open();
-  const {name, about} = user.getUserInfo();
+  const {name, about} = userInfo.getUserInfo();
   inputName.value = name;
   inputDescription.value = about;
 });
