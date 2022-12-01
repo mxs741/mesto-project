@@ -68,8 +68,8 @@ function handleProfileFormSubmit(evt) {
     name: inputName.value,
     about: inputDescription.value
   })
-    .then(() => {
-      user.setUserInfo({name: inputName.value, about: inputDescription.value});
+    .then((data) => {
+      user.setUserInfo({name: data.name, about: data.about});
       popupEditForm.close();
     })
     .catch(err => console.log(err))
@@ -119,8 +119,8 @@ function handleFormEditAvatarSubmit(evt) {
   api.postAvatarLink({
     avatar: inputProfileAvatar.value,
   })
-    .then(() => {
-      user.setUserInfo({avatar : inputProfileAvatar.value});
+    .then((data) => {
+      user.setUserInfo({avatar : data.avatar});
       popupAvatarForm.close();
     })
     .catch(err => console.log(err))
