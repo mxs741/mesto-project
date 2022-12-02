@@ -1,7 +1,6 @@
 import './index.css';
 import {formEdit, formAdd, inputName, inputDescription, editBtn, addBtn,
-   editAvatar, formEditAvatar, createBtn, editAvatarBtn, inputProfileAvatar, editProfileBtn,
-   title, link, cardTemplate, cfg, editAvatarPopup, editFormPopup, addFormPopup, imgPopup, elemImgPopupCaption, elemImgPopup, settings} from '../utils/variables.js';
+   editAvatar, formEditAvatar, createBtn, editAvatarBtn, editProfileBtn, cardTemplate, cfg, editAvatarPopup, editFormPopup, addFormPopup, imgPopup, elemImgPopupCaption, elemImgPopup, settings} from '../utils/variables.js';
 import {Api} from '../components/Api.js';
 import {Card} from '../components/Сard.js';
 import {Section} from '../components/Section.js';
@@ -11,30 +10,18 @@ import {PopupWithImage} from '../components/PopupWithImage.js';
 import {FormValidator} from '../components/FormValidator.js';
 
 const api = new Api(cfg);
-const popupAvatarForm = new PopupWithForm(editAvatarPopup, handleFormEditAvatarSubmit);
-const popupEditForm = new PopupWithForm(editFormPopup, handleProfileFormSubmit);
-const popupAddForm = new PopupWithForm(addFormPopup, handleAddFormSubmit);
 const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup);
 const formUserInfo = new FormValidator(settings, formEdit);
 const formUserAvatar = new FormValidator(settings, formEditAvatar);
 const formAddCard = new FormValidator(settings, formAdd);
-const userInfo = new UserInfo('.profile__name', '.profile__description', '.profile__avatar')
-let section
-
-// Отправка формы установки аватара
-popupAvatarForm.setEventListeners();
-// Отправка формы редактирования профиля
-popupEditForm.setEventListeners();
-// Отправка формы добавления карточки
-popupAddForm.setEventListeners();
+const userInfo = new UserInfo('.profile__name', '.profile__description', '.profile__avatar');
+let section;
 
 popupImg.setEventListeners();
-
 
 formUserAvatar.enableValidation();
 formUserInfo.enableValidation();
 formAddCard.enableValidation();
-
 
 // Получение информации о пользователе и карточках
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
@@ -43,8 +30,8 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
     section = new Section({
       items: data[1],
       renderer: (item) => {
-        const renderer = createCard(item)
-        section.addItem(renderer)
+        const renderer = createCard(item);
+        section.addItem(renderer);
       }
     },
     '.elements');
@@ -75,21 +62,19 @@ function createCard(item) {
           .catch(err => console.log(err))
       },
       popupImgOpenHandler: (name, link) => {
-        popupImg.open(name, link)
+        popupImg.open(name, link);
       }
     })
-  return card.createCard()
-}
+  return card.createCard();
+};
 
 // Форма редактирования профиля
-function handleProfileFormSubmit(evt) {
+const popupEditForm = new PopupWithForm(editFormPopup, (evt,  getInputValues) => {
   evt.preventDefault();
   editProfileBtn.textContent = 'Сохранение...';
-
-
-  const {name, about} = popupEditForm.getInputValues();
+  const {name, about} = getInputValues;
   api.postProfileInfo({
-    name: name, 
+    name: name,
     about: about
   })
     .then((data) => {
@@ -100,15 +85,16 @@ function handleProfileFormSubmit(evt) {
     .finally(() => {
       editProfileBtn.textContent = 'Сохранить';
     })
-};
+});
+popupEditForm.setEventListeners();
 
 // Форма добавления карточки
-function handleAddFormSubmit(evt) {
+const popupAddForm = new PopupWithForm(addFormPopup, (evt, getInputValues) => {
   evt.preventDefault();
   createBtn.textContent = 'Сохранение...';
 
-  const {title, link} = popupAddForm.getInputValues();
-  api.postCard(title, link) 
+  const {title, link} = getInputValues;
+  api.postCard(title, link)
     .then((data) => {
       const renderer = createCard(data);
       section.addItem(renderer);
@@ -118,13 +104,14 @@ function handleAddFormSubmit(evt) {
     .finally(() => {
       createBtn.textContent = 'Создать';
     })
-};
+});
+popupAddForm.setEventListeners();
 
-// Форма установки аватара
-function handleFormEditAvatarSubmit(evt) {
+// Форма редактирования аватара
+const popupAvatarForm = new PopupWithForm(editAvatarPopup, (evt, getInputValues) => {
   evt.preventDefault();
   editAvatarBtn.textContent = 'Сохранение...';
-  const {avatar} = popupAvatarForm.getInputValues();
+  const {avatar} = getInputValues;
   api.postAvatarLink({
     avatar: avatar,
   })
@@ -136,26 +123,8 @@ function handleFormEditAvatarSubmit(evt) {
     .finally(() => {
       editAvatarBtn.textContent = 'Сохранить';
     })
-};
-
-// const popupAvatarForm = new PopupWithForm(editAvatarPopup, (evt, getInputValues) => {
-//   evt.preventDefault();
-//   editAvatarBtn.textContent = 'Сохранение...';
-//   const {avatar} = getInputValues;
-//   console.log(avatar)
-//   api.postAvatarLink({
-//     avatar: inputProfileAvatar.value,
-//   })
-//     .then((data) => {
-//       userInfo.setUserInfo({avatar : data.avatar});
-//       popupAvatarForm.close();
-//     })
-//     .catch(err => console.log(err))
-//     .finally(() => {
-//       editAvatarBtn.textContent = 'Сохранить';
-//     })
-// });
-// popupAvatarForm.setEventListeners();
+});
+popupAvatarForm.setEventListeners();
 
 // Открытие формы редактирования профиля
 editBtn.addEventListener('click', function() {
@@ -175,6 +144,6 @@ editAvatar.addEventListener('click', () => {
 // Открытие формы добавления карточки
 addBtn.addEventListener('click', () => {
   formAddCard.resetValidation();
-  popupAddForm.open()
+  popupAddForm.open();
 });
 
