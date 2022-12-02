@@ -87,10 +87,10 @@ function handleProfileFormSubmit(evt) {
   editProfileBtn.textContent = 'Сохранение...';
 
 
-  //const {name, about} = editFormPopup._getInputValues();
+  const {name, about} = popupEditForm.getInputValues();
   api.postProfileInfo({
-    name: inputName.value, //name и about
-    about: inputDescription.value
+    name: name, 
+    about: about
   })
     .then((data) => {
       userInfo.setUserInfo({name: data.name, about: data.about});
@@ -107,8 +107,8 @@ function handleAddFormSubmit(evt) {
   evt.preventDefault();
   createBtn.textContent = 'Сохранение...';
 
-  //const {title, link} = addFormPopup._getInputValues();
-  api.postCard(title.value, link.value) //title и link используем сверху
+  const {title, link} = popupAddForm.getInputValues();
+  api.postCard(title, link) 
     .then((data) => {
       const renderer = createCard(data);
       section.addItem(renderer);
@@ -124,9 +124,9 @@ function handleAddFormSubmit(evt) {
 function handleFormEditAvatarSubmit(evt) {
   evt.preventDefault();
   editAvatarBtn.textContent = 'Сохранение...';
-  //const {avatar} = editAvatarPopup._getInputValues();
+  const {avatar} = popupAvatarForm.getInputValues();
   api.postAvatarLink({
-    avatar: inputProfileAvatar.value, //тут исп avatar
+    avatar: avatar,
   })
     .then((data) => {
       userInfo.setUserInfo({avatar : data.avatar});

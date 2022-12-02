@@ -9,11 +9,10 @@ export class PopupWithForm extends Popup {
   }
 
   //собрать данные всех полей формы
-  _getInputValues() {
+  getInputValues() {
     this._inputList = this._form.querySelectorAll('.form__input');
     this._formValues = {};
     this._inputList.forEach(input => {
-      // console.log(input.value)
       this._formValues[input.name] = input.value;
     });
     return this._formValues;

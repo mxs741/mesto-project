@@ -69,7 +69,7 @@
       <form class="form__edit-avatar" action="/" method="POST" name="form-edit-avatar">
         <fieldset class="form__fieldset">
           <label class="form__field">
-            <input class="form__input form__input-avatar-link" id="input-avatar-url" type="url" placeholder="Ссылка на аватар" required>
+            <input class="form__input form__input-avatar-link" name="avatar" id="input-avatar-url" type="url" placeholder="Ссылка на аватар" required>
             <span class="form__error-message input-avatar-url-error form__input_type_link-error"></span>
           </label>
         </fieldset>
@@ -84,11 +84,11 @@
       <form class="form__edit" action="/" method="POST" name="form-edit-profile" novalidate>
         <fieldset class="form__fieldset">
           <label class="form__field">
-            <input class="form__input form__input_name" id="input-name" type="text" value="Жак-Ив Кусто" required minlength="2" maxlength="40" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
-            <span class="form__error-message input-name-error form__input_name-error"></span>
+            <input class="form__input form__input_name" name="name" id="input-name" type="text" value="Жак-Ив Кусто" required minlength="2" maxlength="40" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
+            <span class="form__error-message input-name-error form__input_name-error" ></span>
           </label>
           <label class="form__field">
-            <input class="form__input form__input_description" id="input-description" type="text" value="Исследователь океана" required minlength="2" maxlength="200" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
+            <input class="form__input form__input_description" name="about" id="input-description" type="text" value="Исследователь океана" required minlength="2" maxlength="200" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
             <span class="form__error-message input-description-error form__input_description-error"></span>
           </label>
         </fieldset>
@@ -104,11 +104,11 @@
       <form class="form__add" action="/" method="POST" name="form-add-card">
         <fieldset class="form__fieldset">
           <label class="form__field">
-            <input class="form__input form__input_type_name" id="input-name-place" type="text" placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
+            <input class="form__input form__input_type_name" name="title" id="input-name-place" type="text" placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-Zа-яёА-ЯЁ -]+$" data-error-message="Поле может содержать только латинские/киррилические буквы, дефисы и пробелы.">
             <span class="form__error-message input-name-place-error form__input_type_name-error"></span>
           </label>
           <label class="form__field">
-            <input class="form__input form__input_type_link" id="input-url" type="url" placeholder="Ссылка на картинку" required>
+            <input class="form__input form__input_type_link" name="link" id="input-url" type="url" placeholder="Ссылка на картинку" required>
             <span class="form__error-message input-url-error form__input_type_link-error"></span>
           </label>
         </fieldset>
