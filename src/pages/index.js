@@ -18,7 +18,7 @@ const popupImg = new PopupWithImage(imgPopup, elemImgPopupCaption, elemImgPopup)
 const formUserInfo = new FormValidator(settings, formEdit);
 const formUserAvatar = new FormValidator(settings, formEditAvatar);
 const formAddCard = new FormValidator(settings, formAdd);
-let userInfo
+const userInfo = new UserInfo('.profile__name', '.profile__description', '.profile__avatar')
 let section
 
 // Отправка формы установки аватара
@@ -39,7 +39,6 @@ formAddCard.enableValidation();
 // Получение информации о пользователе и карточках
 Promise.all([api.getProfileInfo(), api.getInitialCards()])
   .then(data => {
-    userInfo = new UserInfo('.profile__name', '.profile__description', '.profile__avatar')
     userInfo.setUserInfo(data[0]);
     section = new Section({
       items: data[1],
@@ -125,7 +124,6 @@ function handleAddFormSubmit(evt) {
 function handleFormEditAvatarSubmit(evt) {
   evt.preventDefault();
   editAvatarBtn.textContent = 'Сохранение...';
-
   //const {avatar} = editAvatarPopup._getInputValues();
   api.postAvatarLink({
     avatar: inputProfileAvatar.value, //тут исп avatar
@@ -139,6 +137,25 @@ function handleFormEditAvatarSubmit(evt) {
       editAvatarBtn.textContent = 'Сохранить';
     })
 };
+
+// const popupAvatarForm = new PopupWithForm(editAvatarPopup, (evt, getInputValues) => {
+//   evt.preventDefault();
+//   editAvatarBtn.textContent = 'Сохранение...';
+//   const {avatar} = getInputValues;
+//   console.log(avatar)
+//   api.postAvatarLink({
+//     avatar: inputProfileAvatar.value,
+//   })
+//     .then((data) => {
+//       userInfo.setUserInfo({avatar : data.avatar});
+//       popupAvatarForm.close();
+//     })
+//     .catch(err => console.log(err))
+//     .finally(() => {
+//       editAvatarBtn.textContent = 'Сохранить';
+//     })
+// });
+// popupAvatarForm.setEventListeners();
 
 // Открытие формы редактирования профиля
 editBtn.addEventListener('click', function() {

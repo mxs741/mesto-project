@@ -13,6 +13,7 @@ export class PopupWithForm extends Popup {
     this._inputList = this._form.querySelectorAll('.form__input');
     this._formValues = {};
     this._inputList.forEach(input => {
+      // console.log(input.value)
       this._formValues[input.name] = input.value;
     });
     return this._formValues;
@@ -26,5 +27,8 @@ export class PopupWithForm extends Popup {
   setEventListeners() {
     super.setEventListeners();
     this._popup.addEventListener('submit', this._submitCallback);
+    // this._popup.addEventListener('submit', (evt) => {
+    //   this._submitCallback(evt, this._getInputValues())
+    // });
   }
 }
