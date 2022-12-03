@@ -1,6 +1,6 @@
 import './index.css';
 import {formEdit, formAdd, inputName, inputDescription, editBtn, addBtn,
-   editAvatar, formEditAvatar, createBtn, editAvatarBtn, editProfileBtn, cardTemplate, cfg, editAvatarPopup, editFormPopup, addFormPopup, imgPopup, elemImgPopupCaption, elemImgPopup, settings} from '../utils/variables.js';
+   editAvatar, formEditAvatar, cardTemplate, cfg, editAvatarPopup, editFormPopup, addFormPopup, imgPopup, elemImgPopupCaption, elemImgPopup, settings} from '../utils/variables.js';
 import {Api} from '../components/Api.js';
 import {Card} from '../components/Сard.js';
 import {Section} from '../components/Section.js';
@@ -30,8 +30,8 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
     section = new Section({
       items: data[1],
       renderer: (item) => {
-        const renderer = createCard(item);
-        section.addItem(renderer);
+        const cardElement = createCard(item);
+        section.addItem(cardElement);
       }
     },
     '.elements');
@@ -53,11 +53,11 @@ function createCard(item) {
           })
           .catch(err => console.log(err))
       },
-      likesHandler: (isLiked, btn, cardId) => {
+      likesHandler: (isLiked, cardId) => {
         (isLiked ? api.putAwayLike(cardId) : api.putLike(cardId))
           .then(data => {
             card.setLike(data);
-            btn.classList.toggle('btn_type_like-active');
+            card.toggleLike();
           })
           .catch(err => console.log(err))
       },
@@ -71,19 +71,19 @@ function createCard(item) {
 // Форма редактирования профиля
 const popupEditForm = new PopupWithForm(editFormPopup, (evt,  getInputValues) => {
   evt.preventDefault();
-  editProfileBtn.textContent = 'Сохранение...';
+  popupEditForm.renderLoading(true)
   const {name, about} = getInputValues;
   api.postProfileInfo({
     name: name,
     about: about
   })
     .then((data) => {
-      userInfo.setUserInfo({name: data.name, about: data.about});
+      userInfo.setUserInfo(data);
       popupEditForm.close();
     })
     .catch(err => console.log(err))
     .finally(() => {
-      editProfileBtn.textContent = 'Сохранить';
+      popupEditForm.renderLoading(false)
     })
 });
 popupEditForm.setEventListeners();
@@ -91,18 +91,18 @@ popupEditForm.setEventListeners();
 // Форма добавления карточки
 const popupAddForm = new PopupWithForm(addFormPopup, (evt, getInputValues) => {
   evt.preventDefault();
-  createBtn.textContent = 'Сохранение...';
+  popupAddForm.renderLoading(true)
 
   const {title, link} = getInputValues;
   api.postCard(title, link)
     .then((data) => {
-      const renderer = createCard(data);
-      section.addItem(renderer);
+      const cardElement = createCard(data);
+      section.addItem(cardElement);
       popupAddForm.close();
     })
     .catch(err => console.log(err))
     .finally(() => {
-      createBtn.textContent = 'Создать';
+      popupAddForm.renderLoading(false)
     })
 });
 popupAddForm.setEventListeners();
@@ -110,18 +110,18 @@ popupAddForm.setEventListeners();
 // Форма редактирования аватара
 const popupAvatarForm = new PopupWithForm(editAvatarPopup, (evt, getInputValues) => {
   evt.preventDefault();
-  editAvatarBtn.textContent = 'Сохранение...';
+  popupAvatarForm.renderLoading(true)
   const {avatar} = getInputValues;
   api.postAvatarLink({
     avatar: avatar,
   })
     .then((data) => {
-      userInfo.setUserInfo({avatar : data.avatar});
+      userInfo.setUserInfo(data);
       popupAvatarForm.close();
     })
     .catch(err => console.log(err))
     .finally(() => {
-      editAvatarBtn.textContent = 'Сохранить';
+      popupAvatarForm.renderLoading(false)
     })
 });
 popupAvatarForm.setEventListeners();
